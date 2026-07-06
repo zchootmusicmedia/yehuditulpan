@@ -1,709 +1,114 @@
 <!doctype html>
 <html lang="he" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mix Check | סימולטור אבחון מיקס</title>
-  <style>
-    :root{
-      --bg:#070b14;
-      --panel:#101827;
-      --panel2:#162033;
-      --line:rgba(255,255,255,.12);
-      --text:#f7fbff;
-      --muted:#9fb0c9;
-      --cyan:#49f3de;
-      --blue:#6b7cff;
-      --green:#55f0a6;
-      --red:#ff6d8a;
-      --gold:#f0cc68;
-      --pink:#e887c4;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: Arial, "Noto Sans Hebrew", sans-serif;
-      color:var(--text);
-      min-height:100vh;
-      background:
-        radial-gradient(circle at 15% 5%, rgba(73,243,222,.22), transparent 28%),
-        radial-gradient(circle at 90% 10%, rgba(232,135,196,.18), transparent 28%),
-        radial-gradient(circle at 50% 110%, rgba(107,124,255,.18), transparent 34%),
-        linear-gradient(135deg,#050712,#101827);
-      overflow-x:hidden;
-    }
-    body.flash-good{animation:flashGood .45s ease}
-    body.flash-bad{animation:flashBad .45s ease}
-    @keyframes flashGood{0%{box-shadow:inset 0 0 0 9999px rgba(85,240,166,.18)}100%{box-shadow:none}}
-    @keyframes flashBad{0%{box-shadow:inset 0 0 0 9999px rgba(255,109,138,.16)}100%{box-shadow:none}}
-
-    .app{
-      width:min(1120px, calc(100% - 28px));
-      margin:22px auto;
-      border:1px solid var(--line);
-      border-radius:30px;
-      background:rgba(10,16,28,.86);
-      box-shadow:0 28px 90px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.04);
-      overflow:hidden;
-      backdrop-filter: blur(14px);
-    }
-    .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:20px;
-      padding:18px 24px;
-      border-bottom:1px solid var(--line);
-      background:linear-gradient(90deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
-    }
-    .brand{display:flex;align-items:center;gap:16px}
-    .logoBox{
-      width:155px;height:58px;border-radius:16px;background:white;
-      display:flex;align-items:center;justify-content:center;padding:7px 13px;
-      box-shadow:0 14px 28px rgba(0,0,0,.24);
-    }
-    .logoBox img{max-width:100%;max-height:100%;object-fit:contain}
-    h1{margin:0;font-size:30px;letter-spacing:.2px}
-    .subtitle{color:var(--muted);margin-top:4px;font-size:14px}
-    .hud{display:flex;gap:14px;align-items:stretch}
-    .pointsBox,.meterBox{
-      background:rgba(255,255,255,.065);
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:20px;
-      padding:12px 16px;
-      min-width:136px;
-      position:relative;
-    }
-    .pointsBox small,.meterBox small{color:var(--muted);display:block;margin-bottom:4px}
-    .points{
-      font-size:34px;font-weight:900;color:var(--cyan);
-      text-shadow:0 0 18px rgba(73,243,222,.45);
-    }
-    .plus{
-      position:absolute;
-      left:16px;top:12px;
-      color:var(--gold);
-      font-weight:900;
-      opacity:0;
-      font-size:22px;
-      pointer-events:none;
-    }
-    .plus.pop{animation:plusPop 1s ease forwards}
-    @keyframes plusPop{
-      0%{transform:translateY(10px) scale(.8);opacity:0}
-      20%{opacity:1}
-      100%{transform:translateY(-34px) scale(1.25);opacity:0}
-    }
-    .meterBox{min-width:345px}
-    .level{color:var(--gold);font-weight:800}
-    .meter{
-      display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-top:9px;
-    }
-    .seg{
-      height:18px;border-radius:999px;background:#29364d;
-      border:1px solid rgba(255,255,255,.08);
-      box-shadow:inset 0 2px 5px rgba(0,0,0,.3);
-    }
-    .seg.on{
-      background:linear-gradient(90deg,var(--cyan),var(--green));
-      box-shadow:0 0 18px rgba(73,243,222,.38);
-      animation:segOn .35s ease;
-    }
-    @keyframes segOn{0%{transform:scale(.75)}100%{transform:scale(1)}}
-
-    .screen{display:none}
-    .screen.active{display:block}
-    .intro{
-      padding:48px 34px 44px;
-      text-align:center;
-      min-height:610px;
-      display:flex;align-items:center;justify-content:center;flex-direction:column;
-    }
-    .intro h2{font-size:46px;margin:16px 0 10px}
-    .intro p{max-width:690px;color:#c9d6e8;font-size:18px;line-height:1.7;margin:0 auto 30px}
-    .startBtn,.nextBtn,.downloadBtn,.restartBtn{
-      border:none;border-radius:18px;padding:16px 28px;
-      font-weight:900;font-size:18px;cursor:pointer;
-      background:linear-gradient(135deg,var(--cyan),#a2ffcf);
-      color:#07111d;
-      box-shadow:0 0 34px rgba(73,243,222,.22);
-      transition:.2s;
-    }
-    .startBtn:hover,.nextBtn:hover,.downloadBtn:hover,.restartBtn:hover{transform:translateY(-2px)}
-
-    .game{
-      display:grid;
-      grid-template-columns: 1.55fr .85fr;
-      min-height:640px;
-    }
-    .left{
-      padding:30px;
-      border-left:1px solid var(--line);
-    }
-    .right{
-      padding:30px;
-      background:rgba(255,255,255,.035);
-    }
-    .stepLine{display:flex;justify-content:space-between;gap:16px;align-items:center;color:var(--muted);font-size:14px;margin-bottom:14px}
-    .pill{
-      display:inline-flex;align-items:center;gap:7px;
-      padding:8px 12px;border-radius:999px;
-      background:rgba(73,243,222,.10);
-      color:#dffefb;border:1px solid rgba(73,243,222,.24);
-      font-weight:800;
-    }
-    .daw{
-      border:1px solid rgba(255,255,255,.12);
-      background:#080e1a;
-      border-radius:24px;
-      padding:18px;
-      position:relative;
-      overflow:hidden;
-      box-shadow:inset 0 0 40px rgba(73,243,222,.025);
-    }
-    .dawTop{
-      display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;
-      color:var(--muted);font-size:13px;
-    }
-    .leds{display:flex;gap:6px;direction:ltr}
-    .led{width:10px;height:10px;border-radius:50%;background:#31435e}
-    .led:nth-child(1){background:#ff5f57}.led:nth-child(2){background:#ffbd2e}.led:nth-child(3){background:#28c840}
-    .wave{
-      height:145px;border-radius:18px;background:linear-gradient(180deg,#111a2c,#070b13);
-      border:1px solid rgba(255,255,255,.10);
-      position:relative;overflow:hidden;
-    }
-    .bars{
-      position:absolute;inset:0;display:flex;align-items:center;gap:4px;padding:0 18px;direction:ltr;
-    }
-    .bar{
-      width:7px;border-radius:999px;
-      background:linear-gradient(180deg,var(--cyan),var(--blue));
-      opacity:.78;
-      animation:pulse 1s infinite ease-in-out paused;
-    }
-    .wave.playing .bar{animation-play-state:running}
-    @keyframes pulse{0%,100%{transform:scaleY(.35)}50%{transform:scaleY(1)}}
-    .playRow{display:flex;align-items:center;gap:14px;margin-top:17px}
-    .playBtn{
-      width:66px;height:66px;border-radius:50%;
-      border:none;cursor:pointer;
-      background:linear-gradient(135deg,var(--cyan),#a5ffd4);
-      color:#07111d;font-size:26px;font-weight:900;
-      box-shadow:0 0 40px rgba(73,243,222,.24);
-    }
-    .progressTrack{
-      flex:1;height:13px;border-radius:999px;background:#263449;overflow:hidden;
-      border:1px solid rgba(255,255,255,.08);
-    }
-    .progressFill{height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--gold));transition:width 1.1s linear}
-    .question{
-      margin:24px 0 15px;
-      font-size:31px;
-      line-height:1.25;
-    }
-    .answers{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-    }
-    .answer{
-      border:1px solid rgba(255,255,255,.11);
-      background:linear-gradient(180deg,#1c2941,#131d31);
-      color:#fff;
-      border-radius:18px;
-      padding:17px 16px;
-      text-align:right;
-      cursor:pointer;
-      min-height:70px;
-      font-size:17px;
-      transition:.18s;
-    }
-    .answer:hover{transform:translateY(-2px);border-color:rgba(73,243,222,.5)}
-    .answer.correct{background:linear-gradient(180deg,#143b2b,#10271f);border-color:rgba(85,240,166,.8)}
-    .answer.wrong{background:linear-gradient(180deg,#462033,#2a1823);border-color:rgba(255,109,138,.8)}
-    .popup{
-      display:none;
-      margin-top:18px;
-      padding:18px 18px;
-      border-radius:20px;
-      border:1px solid rgba(255,255,255,.13);
-      background:rgba(255,255,255,.065);
-      animation:pop .25s ease;
-    }
-    @keyframes pop{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
-    .popup.good{border-color:rgba(85,240,166,.45);background:rgba(85,240,166,.08)}
-    .popup.bad{border-color:rgba(255,109,138,.45);background:rgba(255,109,138,.08)}
-    .popupTitle{font-size:26px;font-weight:900;margin-bottom:8px}
-    .tip{
-      margin-top:12px;
-      background:rgba(240,204,104,.12);
-      border:1px solid rgba(240,204,104,.28);
-      color:#ffe9a3;
-      border-radius:15px;
-      padding:13px 14px;
-      line-height:1.55;
-    }
-
-    .sideCard{
-      background:#101827;border:1px solid rgba(255,255,255,.10);
-      border-radius:22px;
-      padding:18px;
-      margin-bottom:16px;
-    }
-    .sideCard h3{margin:0 0 12px}
-    .miniStats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .mini{
-      border-radius:16px;
-      padding:13px;
-      background:rgba(255,255,255,.05);
-      text-align:center;
-    }
-    .mini b{display:block;font-size:26px;color:var(--cyan)}
-    .trackList{display:grid;gap:8px}
-    .trackItem{
-      display:flex;justify-content:space-between;align-items:center;
-      padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.045);
-      color:var(--muted);
-    }
-    .trackItem.done{color:#fff;background:rgba(85,240,166,.09)}
-    .trackItem.current{color:#fff;border:1px solid rgba(73,243,222,.38)}
-
-    .final{
-      padding:34px;
-      min-height:650px;
-    }
-    .finalHero{
-      text-align:center;
-      border:1px solid rgba(73,243,222,.24);
-      background:linear-gradient(180deg,rgba(73,243,222,.12),rgba(255,255,255,.035));
-      border-radius:26px;
-      padding:28px;
-      margin-bottom:18px;
-    }
-    .finalHero h2{font-size:38px;margin:12px 0 7px}
-    .rank{font-size:30px;color:var(--gold);font-weight:900}
-    .bigScore{font-size:54px;color:var(--cyan);font-weight:900;text-shadow:0 0 20px rgba(73,243,222,.35)}
-    .finalGrid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
-    .analysis{
-      background:#101827;border:1px solid rgba(255,255,255,.10);
-      border-radius:22px;padding:18px;line-height:1.6;
-    }
-    .actions{display:flex;justify-content:center;gap:12px;margin-top:20px;flex-wrap:wrap}
-    .downloadBtn{background:linear-gradient(135deg,var(--gold),#fff0a6)}
-    .restartBtn{background:linear-gradient(135deg,#2d3f63,#4b618e);color:#fff}
-
-    #certificate{
-      display:none;
-      width:794px;
-      min-height:1123px;
-      background:#fff;
-      color:#151515;
-      padding:58px;
-      text-align:center;
-      direction:rtl;
-      font-family:Arial,sans-serif;
-    }
-    #certificate .certLogo{height:68px;margin-bottom:48px}
-    #certificate h1{font-size:42px;color:#151515;margin:10px 0}
-    #certificate h2{font-size:28px;color:#2b2b2b;margin:18px 0}
-    #certificate .certRank{font-size:34px;color:#bd8c21;font-weight:900;margin:28px 0}
-    #certificate .certScore{font-size:48px;color:#0a8078;font-weight:900}
-    #certificate .certBox{
-      border:2px solid #e1c46b;
-      border-radius:22px;
-      padding:45px 30px;
-      margin-top:32px;
-      min-height:780px;
-    }
-    #certificate .certFooter{margin-top:70px;color:#666}
-    @media print{
-      body *{visibility:hidden}
-      #certificate, #certificate *{visibility:visible}
-      #certificate{display:block!important;position:absolute;inset:0;margin:0;width:100%;min-height:100%;padding:45px}
-    }
-
-    @media(max-width:900px){
-      .topbar,.hud{flex-direction:column;align-items:stretch}
-      .brand{justify-content:center;text-align:center;flex-direction:column}
-      .game{grid-template-columns:1fr}
-      .left{border-left:none;border-bottom:1px solid var(--line)}
-      .answers{grid-template-columns:1fr}
-      .meterBox{min-width:0}
-      .finalGrid{grid-template-columns:1fr}
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mix Check | יהודית שיינשניידר</title>
+<style>
+:root{--bg:#070b14;--line:rgba(255,255,255,.13);--text:#f8fbff;--muted:#9fb0c8;--cyan:#4cf5df;--green:#72ffb5;--gold:#f2cc63;--red:#ff6f8f;--blue:#7282ff}
+*{box-sizing:border-box}body{margin:0;color:var(--text);font-family:Arial,sans-serif;background:radial-gradient(circle at 8% 5%,rgba(76,245,223,.24),transparent 28%),radial-gradient(circle at 92% 4%,rgba(189,141,255,.16),transparent 30%),linear-gradient(135deg,#050712,#101827);overflow-x:hidden}
+body.flash-good{animation:flashGood .45s ease}body.flash-bad{animation:flashBad .45s ease}
+@keyframes flashGood{0%{box-shadow:inset 0 0 0 9999px rgba(76,245,223,.12)}100%{box-shadow:none}}@keyframes flashBad{0%{box-shadow:inset 0 0 0 9999px rgba(255,111,143,.13)}100%{box-shadow:none}}
+.app{width:min(1180px,calc(100% - 26px));margin:18px auto;border:1px solid var(--line);border-radius:30px;overflow:hidden;background:rgba(8,13,24,.9);box-shadow:0 35px 110px rgba(0,0,0,.58);min-height:calc(100vh - 36px)}
+.topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 22px;border-bottom:1px solid var(--line);background:linear-gradient(90deg,rgba(17,26,43,.98),rgba(10,16,29,.96));backdrop-filter:blur(18px)}
+.brand{display:flex;align-items:center;gap:16px}.logoBox{width:188px;height:68px;border-radius:20px;background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,255,255,.045));border:1px solid rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;padding:8px 14px;box-shadow:0 14px 28px rgba(0,0,0,.24)}.logoBox img{max-width:100%;max-height:100%;object-fit:contain}
+.brandText h1{margin:0;font-size:32px}.brandText div{color:var(--muted);font-weight:700;margin-top:3px}.hud{display:flex;gap:14px;align-items:stretch}.hudCard{background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.045));border:1px solid rgba(255,255,255,.14);border-radius:22px;padding:12px 16px;min-width:142px;position:relative}.hudCard small{display:block;color:var(--muted);margin-bottom:3px}.points{font-size:38px;font-weight:950;color:var(--cyan);text-shadow:0 0 22px rgba(76,245,223,.48);line-height:1}.plus{position:absolute;left:18px;top:10px;color:var(--gold);font-size:24px;font-weight:950;opacity:0;pointer-events:none}.plus.pop{animation:plusPop 1s ease forwards}@keyframes plusPop{0%{opacity:0;transform:translateY(10px) scale(.8)}22%{opacity:1}100%{opacity:0;transform:translateY(-38px) scale(1.35)}}.meterCard{min-width:390px}.level{color:var(--gold);font-weight:900}.meter{display:grid;grid-template-columns:repeat(8,1fr);gap:7px;margin-top:10px}.seg{height:20px;border-radius:999px;background:#26334a;border:1px solid rgba(255,255,255,.09);box-shadow:inset 0 3px 6px rgba(0,0,0,.34)}.seg.on{background:linear-gradient(90deg,var(--cyan),var(--green));box-shadow:0 0 22px rgba(76,245,223,.38);animation:segOn .34s ease}@keyframes segOn{0%{transform:scale(.68)}100%{transform:scale(1)}}
+.screen{display:none}.screen.active{display:block}.intro{min-height:calc(100vh - 145px);display:flex;align-items:center;justify-content:center;text-align:center;padding:44px 24px}.hero{max-width:820px;padding:34px;border-radius:34px;background:radial-gradient(circle at 50% 0%,rgba(76,245,223,.12),rgba(255,255,255,.035));border:1px solid rgba(255,255,255,.12)}.hero h2{font-size:58px;line-height:1.08;margin:22px 0 26px}.startBtn,.nextBtn,.downloadBtn,.restartBtn{border:none;border-radius:20px;padding:17px 30px;font-weight:950;font-size:19px;cursor:pointer;background:linear-gradient(135deg,var(--cyan),#a2ffd0);color:#07111d;box-shadow:0 0 40px rgba(76,245,223,.25);transition:.18s}.startBtn:hover,.nextBtn:hover,.downloadBtn:hover,.restartBtn:hover{transform:translateY(-2px)}
+.gameWrap{padding:24px}.gamePanel{max-width:980px;margin:0 auto;width:100%;display:grid;gap:20px}.gameTop{display:flex;align-items:center;justify-content:space-between;gap:12px}.pill{display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:999px;background:rgba(76,245,223,.10);border:1px solid rgba(76,245,223,.28);color:#dffefb;font-weight:900}.pill.gold{background:rgba(242,204,99,.11);border-color:rgba(242,204,99,.28);color:#fff0ba}
+.daw{border:1px solid rgba(255,255,255,.12);background:#080e19;border-radius:28px;padding:18px;overflow:hidden;box-shadow:inset 0 0 52px rgba(76,245,223,.035),0 25px 60px rgba(0,0,0,.25)}.dawTop{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;color:var(--muted);font-weight:700}.leds{display:flex;gap:6px;direction:ltr}.led{width:11px;height:11px;border-radius:50%;background:#33435f}.led:nth-child(1){background:#ff5f57}.led:nth-child(2){background:#ffbd2e}.led:nth-child(3){background:#28c840}.wave{height:170px;border-radius:22px;background:linear-gradient(180deg,#111b2e,#070b13);border:1px solid rgba(255,255,255,.10);position:relative;overflow:hidden}.wave:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(76,245,223,.09),transparent);transform:translateX(110%)}.wave.playing:after{animation:sweep 1.1s ease}@keyframes sweep{from{transform:translateX(110%)}to{transform:translateX(-110%)}}.bars{position:absolute;inset:0;display:flex;align-items:center;gap:4px;padding:0 18px;direction:ltr}.bar{width:7px;border-radius:999px;background:linear-gradient(180deg,var(--cyan),var(--blue));opacity:.82;animation:pulse 1s infinite ease-in-out paused}.wave.playing .bar{animation-play-state:running}@keyframes pulse{0%,100%{transform:scaleY(.33)}50%{transform:scaleY(1)}}.playRow{display:flex;align-items:center;gap:14px;margin-top:17px}.playBtn{width:72px;height:72px;border-radius:50%;border:none;cursor:pointer;background:linear-gradient(135deg,var(--cyan),#a5ffd4);color:#07111d;font-size:28px;font-weight:950;box-shadow:0 0 44px rgba(76,245,223,.28)}.progressTrack{flex:1;height:14px;border-radius:999px;background:#263449;overflow:hidden;border:1px solid rgba(255,255,255,.08)}.progressFill{height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--gold));transition:width 1.1s linear}
+.questionCard{border:1px solid rgba(255,255,255,.12);border-radius:28px;padding:24px;background:linear-gradient(180deg,rgba(255,255,255,.065),rgba(255,255,255,.035))}.question{margin:0 0 18px;font-size:34px;line-height:1.25;text-align:center}.answers{display:grid;grid-template-columns:1fr 1fr;gap:13px}.answer{border:1px solid rgba(255,255,255,.12);background:linear-gradient(180deg,#1c2941,#131d31);color:#fff;border-radius:19px;padding:18px;text-align:right;cursor:pointer;min-height:72px;font-size:18px;transition:.18s}.answer:hover{transform:translateY(-2px);border-color:rgba(76,245,223,.55)}.answer.correct{background:linear-gradient(180deg,#143d2b,#10271f);border-color:rgba(114,255,181,.8)}.answer.wrong{background:linear-gradient(180deg,#462033,#2a1823);border-color:rgba(255,111,143,.8)}
+.modalOverlay{position:fixed;inset:0;z-index:30;display:none;align-items:center;justify-content:center;background:rgba(2,6,14,.62);backdrop-filter:blur(8px);padding:20px}.modal{width:min(520px,100%);border-radius:30px;border:1px solid rgba(255,255,255,.15);background:linear-gradient(180deg,#172238,#0e1626);box-shadow:0 35px 100px rgba(0,0,0,.55);padding:28px;text-align:center;animation:modalPop .28s ease}@keyframes modalPop{from{opacity:0;transform:translateY(16px) scale(.96)}to{opacity:1;transform:none}}.modalIcon{font-size:60px;margin-bottom:8px}.modalTitle{font-size:34px;font-weight:950;margin-bottom:10px}.modalText{color:#dbe7f7;line-height:1.65;font-size:17px}.tip{margin-top:15px;background:rgba(242,204,99,.12);border:1px solid rgba(242,204,99,.30);color:#ffe9a5;border-radius:18px;padding:15px;line-height:1.6;text-align:right}.coin{position:fixed;z-index:50;font-size:42px;pointer-events:none;left:50%;top:50%;opacity:0}.coin.fly{animation:coinFly 1.05s ease forwards}@keyframes coinFly{0%{opacity:0;transform:translate(-50%,-50%) scale(.4) rotate(0deg)}20%{opacity:1}100%{opacity:0;transform:translate(-520px,-340px) scale(1.25) rotate(360deg)}}
+.final{padding:28px}.finalHero{max-width:980px;margin:0 auto 18px;text-align:center;border-radius:32px;border:1px solid rgba(76,245,223,.25);background:radial-gradient(circle at top,rgba(76,245,223,.14),rgba(255,255,255,.04));padding:28px}.finalHero h2{font-size:42px;margin:13px 0 8px}.bigScore{font-size:64px;color:var(--cyan);font-weight:950;text-shadow:0 0 25px rgba(76,245,223,.42)}.rank{font-size:32px;color:var(--gold);font-weight:950}.finalGrid{max-width:980px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:16px}.analysis{background:#101827;border:1px solid rgba(255,255,255,.11);border-radius:24px;padding:20px;line-height:1.65;font-size:17px}.actions{display:flex;justify-content:center;gap:13px;flex-wrap:wrap;margin-top:22px}.downloadBtn{background:linear-gradient(135deg,var(--gold),#fff0a6)}.restartBtn{background:linear-gradient(135deg,#2d3f63,#4b618e);color:#fff}
+#certificate{display:none;width:794px;min-height:1123px;background:#fbfbfb;color:#151515;padding:50px;text-align:center;direction:rtl;font-family:Arial,sans-serif}.certFrame{min-height:1015px;border:4px solid #d8b24c;border-radius:30px;padding:42px 38px;position:relative;background:radial-gradient(circle at top,rgba(242,204,99,.15),transparent 36%),linear-gradient(180deg,#ffffff,#f7f7f7)}.certLogo{width:210px;height:86px;margin:0 auto 30px;border-radius:18px;background:#111827;display:flex;align-items:center;justify-content:center;padding:10px}.certLogo img{max-width:100%;max-height:100%}.medal{font-size:86px;margin:18px 0 5px;text-shadow:0 8px 20px rgba(0,0,0,.12)}#certificate h1{font-size:46px;margin:12px 0;color:#111}#certificate h2{font-size:25px;font-weight:500;color:#333}.certRank{font-size:36px;color:#b8860b;font-weight:950;margin:25px 0}.certScore{font-size:56px;color:#097d76;font-weight:950}.certStrength{margin:34px auto 0;max-width:560px;background:#fff8df;border:1px solid #e6c86a;border-radius:20px;padding:22px;font-size:22px;line-height:1.55}.certFooter{position:absolute;bottom:38px;left:0;right:0;color:#666;font-size:18px}
+@media print{@page{size:A4;margin:0}body *{visibility:hidden}#certificate,#certificate *{visibility:visible}#certificate{display:block!important;position:absolute;inset:0;margin:0;width:100%;min-height:100%;padding:32px}}
+@media(max-width:900px){.topbar{position:relative;flex-direction:column;align-items:stretch}.brand{text-align:center;justify-content:center;flex-direction:column}.hud{flex-direction:column}.meterCard{min-width:0}.hero h2{font-size:40px}.answers{grid-template-columns:1fr}.finalGrid{grid-template-columns:1fr}.coin.fly{animation:coinFlyMobile 1.05s ease forwards}@keyframes coinFlyMobile{0%{opacity:0;transform:translate(-50%,-50%) scale(.4) rotate(0)}20%{opacity:1}100%{opacity:0;transform:translate(-120px,-390px) scale(1.25) rotate(360deg)}}}
+</style>
 </head>
 <body>
-  <div class="app">
-    <div class="topbar">
-      <div class="brand">
-        <div class="logoBox"><img src="logo.gif" alt="יהודית שיינשניידר"></div>
-        <div>
-          <h1>Mix Check</h1>
-          <div class="subtitle">סימולטור אבחון מיקס לאולפניסטיות</div>
-        </div>
-      </div>
-      <div class="hud">
-        <div class="pointsBox">
-          <small>נקודות</small>
-          <div class="points" id="points">0</div>
-          <div class="plus" id="plus">+15</div>
-        </div>
-        <div class="meterBox">
-          <small>מד מקצועיות · <span class="level" id="level">אולפניסטית מתחילה</span></small>
-          <div class="meter" id="meter"></div>
-        </div>
-      </div>
-    </div>
-
-    <section class="screen intro active" id="intro">
-      <div class="logoBox" style="margin-bottom:20px;width:190px;height:74px"><img src="logo.gif" alt=""></div>
-      <h2>האם האוזן שלך חושבת כמו אולפניסטית מקצועית?</h2>
-      <p>האזיני לקטעי מיקס קצרים, זהי בעיות, בחרי פתרונות — וקבלי בסוף דירוג מקצועיות ותעודה אישית.</p>
-      <button class="startBtn" onclick="startGame()">🎚️ התחילי את Mix Check</button>
-    </section>
-
-    <section class="screen" id="game">
-      <div class="game">
-        <div class="left">
-          <div class="stepLine">
-            <span class="pill" id="stepText">קטע 1 מתוך 8</span>
-            <span id="questionType">זיהוי בעיה</span>
-          </div>
-
-          <div class="daw">
-            <div class="dawTop">
-              <span id="trackName">Track 01 · Mix Preview</span>
-              <span class="leds"><span class="led"></span><span class="led"></span><span class="led"></span></span>
-            </div>
-            <div class="wave" id="wave"><div class="bars" id="bars"></div></div>
-            <div class="playRow">
-              <button class="playBtn" onclick="playPreview()">▶</button>
-              <div class="progressTrack"><div class="progressFill" id="progressFill"></div></div>
-            </div>
-          </div>
-
-          <h2 class="question" id="question">מה הבעיה במיקס ששמעת עכשיו?</h2>
-          <div class="answers" id="answers"></div>
-
-          <div class="popup" id="popup"></div>
-        </div>
-
-        <aside class="right">
-          <div class="sideCard">
-            <h3>התקדמות</h3>
-            <div class="miniStats">
-              <div class="mini"><span>קטע</span><b id="miniStep">1/8</b></div>
-              <div class="mini"><span>דיוק</span><b id="accuracy">0%</b></div>
-            </div>
-          </div>
-          <div class="sideCard">
-            <h3>רשימת הקטעים</h3>
-            <div class="trackList" id="trackList"></div>
-          </div>
-          <div class="sideCard">
-            <h3>הטיפ הבא ייפתח אחרי תשובה</h3>
-            <div style="color:var(--muted);line-height:1.6">בכל שלב תקבלי הערה קצרה בסגנון העבודה של יהודית.</div>
-          </div>
-        </aside>
-      </div>
-    </section>
-
-    <section class="screen final" id="final">
-      <div class="finalHero">
-        <div class="logoBox" style="margin:0 auto 16px;width:170px"><img src="logo.gif" alt=""></div>
-        <div>דו״ח Mix Check</div>
-        <h2>סיימת את סימולטור אבחון המיקס</h2>
-        <div class="bigScore" id="finalScore">0</div>
-        <div class="rank" id="finalRank">🎧 אולפניסטית מתחילה</div>
-      </div>
-
-      <div class="finalGrid">
-        <div class="analysis"><b>החוזקה שלך</b><br>זיהוי נקודות מרכזיות במיקס והקשבה למה שבאמת מפריע.</div>
-        <div class="analysis"><b>מה כדאי לחזק</b><br>בחירת תיקון מדויק לפני פתיחת פלאגינים ועבודה לפי סדר מקצועי.</div>
-        <div class="analysis"><b>המלצת יהודית</b><br>לפני כל פעולה במיקס, עצרי לשאלה אחת: מה הדבר שהכי ישפר את התחושה של השיר?</div>
-        <div class="analysis"><b>השלב הבא</b><br>לחדד אבחון, התאמה לסגנון, וקבלת החלטות כדי להגיע למיקס שנשמע בשל ומקצועי.</div>
-      </div>
-
-      <div class="actions">
-        <button class="downloadBtn" onclick="downloadCertificate()">📄 הורדת תעודה PDF</button>
-        <button class="restartBtn" onclick="restart()">🔁 להתחיל מחדש</button>
-      </div>
-    </section>
+<div class="app">
+<header class="topbar">
+  <div class="brand">
+    <div class="logoBox"><img src="logo.gif" alt="יהודית שיינשניידר"></div>
+    <div class="brandText"><h1>Mix Check</h1><div>סימולטור אבחון מיקס לאולפניסטיות</div></div>
   </div>
-
-  <div id="certificate">
-    <div class="certBox">
-      <img class="certLogo" src="logo.gif" alt="">
-      <h1>תעודת Mix Check</h1>
-      <h2>מוענקת על השלמת סימולטור אבחון המיקס</h2>
-      <div class="certRank" id="certRank">אולפניסטית מקצועית</div>
-      <div>ציון סופי</div>
-      <div class="certScore" id="certScore">0 נקודות</div>
-      <p style="font-size:20px;line-height:1.7;margin-top:38px">
-        התעודה משקפת את רמת הזיהוי, החשיבה והבחירה המקצועית שבוצעו במהלך הסימולטור.
-      </p>
-      <div class="certFooter">
-        נבדק על פי שיטת העבודה של יהודית שיינשניידר<br>
-        <span id="certDate"></span>
-      </div>
-    </div>
+  <div class="hud">
+    <div class="hudCard"><small>נקודות</small><div class="points" id="points">0</div><div class="plus" id="plus">+15</div></div>
+    <div class="hudCard meterCard"><small>מד מקצועיות · <span class="level" id="level">אולפניסטית מתחילה</span></small><div class="meter" id="meter"></div></div>
   </div>
-
+</header>
+<section class="screen intro active" id="intro">
+  <div class="hero">
+    <div class="logoBox" style="margin:0 auto;width:220px;height:82px"><img src="logo.gif" alt=""></div>
+    <h2>האם האוזן שלך חושבת כמו אולפניסטית מקצועית?</h2>
+    <button class="startBtn" onclick="startGame()">🎚️ התחילי את Mix Check</button>
+  </div>
+</section>
+<section class="screen" id="game">
+  <div class="gameWrap"><div class="gamePanel">
+    <div class="gameTop"><span class="pill" id="stepText">קטע 1 מתוך 8</span><span class="pill gold" id="typeText">זיהוי בעיה</span></div>
+    <div class="daw">
+      <div class="dawTop"><span id="trackName">Track 01 · Mix Preview</span><span class="leds"><span class="led"></span><span class="led"></span><span class="led"></span></span></div>
+      <div class="wave" id="wave"><div class="bars" id="bars"></div></div>
+      <div class="playRow"><button class="playBtn" onclick="playPreview()">▶</button><div class="progressTrack"><div class="progressFill" id="progressFill"></div></div></div>
+    </div>
+    <div class="questionCard"><h2 class="question" id="question">מה הבעיה במיקס ששמעת עכשיו?</h2><div class="answers" id="answers"></div></div>
+  </div></div>
+</section>
+<section class="screen final" id="final">
+  <div class="finalHero">
+    <div class="logoBox" style="margin:0 auto 16px;width:210px;height:78px"><img src="logo.gif" alt=""></div>
+    <div style="font-weight:800;color:var(--muted)">דו״ח Mix Check</div><h2>סיימת את סימולטור אבחון המיקס</h2>
+    <div class="bigScore" id="finalScore">0 נקודות</div><div class="rank" id="finalRank">🎧 אולפניסטית מתחילה</div>
+  </div>
+  <div class="finalGrid">
+    <div class="analysis"><b>החוזקה שלך</b><br><span id="strengthText">זיהוי נקודות מרכזיות במיקס.</span></div>
+    <div class="analysis"><b>מה כדאי לחזק</b><br>בחירת תיקון מדויק לפני פתיחת פלאגינים ועבודה לפי סדר מקצועי.</div>
+    <div class="analysis"><b>המלצת יהודית</b><br>לפני כל פעולה במיקס, עצרי לשאלה אחת: מה הדבר שהכי ישפר את התחושה של השיר?</div>
+    <div class="analysis"><b>השלב הבא</b><br>לחדד אבחון, התאמה לסגנון וקבלת החלטות כדי להגיע למיקס שנשמע בשל ומקצועי.</div>
+  </div>
+  <div class="actions"><button class="downloadBtn" onclick="downloadCertificate()">🏆 הורדת תעודה PDF</button><button class="restartBtn" onclick="restart()">🔁 להתחיל מחדש</button></div>
+</section>
+</div>
+<div class="modalOverlay" id="modalOverlay"><div class="modal">
+  <div class="modalIcon" id="modalIcon">🎚️</div><div class="modalTitle" id="modalTitle">מדויק!</div><div class="modalText" id="modalText">+15 נקודות</div><div class="tip" id="modalTip"></div>
+  <button class="nextBtn" style="margin-top:18px" onclick="next()">לקטע הבא ←</button>
+</div></div>
+<div class="coin" id="coin">🏆</div>
+<div id="certificate"><div class="certFrame">
+  <div class="certLogo"><img src="logo.gif" alt=""></div><div class="medal">🏆</div><h1>תעודת Mix Check</h1><h2>מוענקת על השלמת סימולטור אבחון המיקס</h2>
+  <div class="certRank" id="certRank">אולפניסטית מקצועית</div><div>ציון סופי</div><div class="certScore" id="certScore">0 נקודות</div>
+  <div class="certStrength"><b>החוזקה שלך:</b><br><span id="certStrength">זיהוי נקודות מרכזיות במיקס והקשבה מקצועית.</span></div>
+  <div class="certFooter">נבדק על פי שיטת העבודה של יהודית שיינשניידר<br><span id="certDate"></span></div>
+</div></div>
 <script>
-const questions = [
-  {
-    type:"זיהוי בעיה",
-    track:"Track 01 · Vocal Mix",
-    q:"מה הבעיה במיקס ששמעת עכשיו?",
-    answers:["השירה קבורה בתוך הפלייבק","יותר מדי סיבילנס","חסר ריוורב","המיקס שקט מדי"],
-    correct:0,
-    tip:"לפני קומפרסור או EQ, בודקים קודם איזון בסיסי בין שירה לפלייבק."
-  },
-  {
-    type:"זיהוי בעיה",
-    track:"Track 02 · Low Mid",
-    q:"מה הבעיה במיקס ששמעת עכשיו?",
-    answers:["סאונד בוצי ועומס בתדרים","השירה חדה מדי","חסר דיליי","הפלייבק דק מדי"],
-    correct:0,
-    tip:"תחושת 'בוץ' מגיעה לרוב מעומס באזור האמצע-נמוך. שם מתחילים לחפש."
-  },
-  {
-    type:"זיהוי בעיה",
-    track:"Track 03 · Reverb Space",
-    q:"מה הבעיה במיקס ששמעת עכשיו?",
-    answers:["יותר מדי ריוורב שמרחיק את השירה","הווליום הכללי נמוך","אין מספיק בס","השיר מהיר מדי"],
-    correct:0,
-    tip:"ריוורב יפה לא תמיד משרת את השיר. אם המילים מתרחקות — צריך לצמצם."
-  },
-  {
-    type:"זיהוי בעיה",
-    track:"Track 04 · Sibilance",
-    q:"מה הבעיה במיקס ששמעת עכשיו?",
-    answers:["סיבילנס בולט באותיות ש׳/ס׳/צ׳","הפזמון חלש מדי","אין מספיק עומק","השירה יבשה מדי"],
-    correct:0,
-    tip:"כשאותיות שורקות קופצות החוצה, זה סימן לבדוק De-Esser או טיפול עדין בתדרים הגבוהים."
-  },
-  {
-    type:"בחירת פתרון",
-    track:"Track 05 · Vocal Balance",
-    q:"מה היית עושה קודם כדי לשפר את המיקס?",
-    answers:["מאזנת מחדש את השירה מול הפלייבק","מוסיפה עוד ריוורב","מגבירה את כל הערוצים","מחליפה את כל הסאונד"],
-    correct:0,
-    tip:"הרבה פעמים התיקון הכי מקצועי הוא לא פלאגין, אלא איזון נכון."
-  },
-  {
-    type:"בחירת פתרון",
-    track:"Track 06 · Muddy Mix",
-    q:"מה היית עושה קודם כדי לשפר את המיקס?",
-    answers:["מנקה בעדינות עומס בתדרים הנמוכים-אמצעיים","מוסיפה דיסטורשן","מורידה את כל הבס","מגבירה את השירה בלבד"],
-    correct:0,
-    tip:"ניקוי עדין עדיף על פעולה קיצונית. מיקס טוב נבנה מדקויות."
-  },
-  {
-    type:"בחירת פתרון",
-    track:"Track 07 · Emotional Chorus",
-    q:"מה היית עושה קודם כדי לשפר את המיקס?",
-    answers:["בונה את הפזמון עם שכבות ואוטומציה","משאירה את כל השיר באותה עוצמה","מייבשת לגמרי את השירה","מורידה את הקולות בפזמון"],
-    correct:0,
-    tip:"פזמון צריך להרגיש כמו התקדמות. לפעמים השדרוג הוא בנייה, לא תיקון."
-  },
-  {
-    type:"בחירת פתרון",
-    track:"Track 08 · Style Match",
-    q:"מה היית עושה קודם כדי לשפר את המיקס?",
-    answers:["בודקת אם הסאונד מתאים לרגש ולסגנון השיר","מוסיפה את אותו אפקט על כל הערוצים","משנה טמפו","מגבירה את המיקס עד שיישמע חזק"],
-    correct:0,
-    tip:"מיקס מקצועי הוא לא רק נקי. הוא צריך להתאים לסוג השיר ולתחושה שהוא אמור ליצור."
-  }
+const questions=[
+{type:"זיהוי בעיה",track:"Track 01 · Vocal Balance",q:"מה הבעיה במיקס ששמעת עכשיו?",answers:["השירה קבורה בתוך הפלייבק","יותר מדי סיבילנס","חסר ריוורב","המיקס שקט מדי"],correct:0,tip:"לפני קומפרסור או EQ, בודקים קודם איזון בסיסי בין שירה לפלייבק."},
+{type:"זיהוי בעיה",track:"Track 02 · Low Mid",q:"מה הבעיה במיקס ששמעת עכשיו?",answers:["סאונד בוצי ועומס בתדרים","השירה חדה מדי","חסר דיליי","הפלייבק דק מדי"],correct:0,tip:"תחושת בוץ מגיעה לרוב מעומס באזור האמצע-נמוך. שם מתחילים לחפש."},
+{type:"זיהוי בעיה",track:"Track 03 · Reverb Space",q:"מה הבעיה במיקס ששמעת עכשיו?",answers:["יותר מדי ריוורב שמרחיק את השירה","הווליום הכללי נמוך","אין מספיק בס","השיר מהיר מדי"],correct:0,tip:"ריוורב יפה לא תמיד משרת את השיר. אם המילים מתרחקות — צריך לצמצם."},
+{type:"זיהוי בעיה",track:"Track 04 · Sibilance",q:"מה הבעיה במיקס ששמעת עכשיו?",answers:["סיבילנס בולט באותיות ש׳/ס׳/צ׳","הפזמון חלש מדי","אין מספיק עומק","השירה יבשה מדי"],correct:0,tip:"כשאותיות שורקות קופצות החוצה, זה סימן לבדוק De-Esser או טיפול עדין בתדרים הגבוהים."},
+{type:"בחירת פתרון",track:"Track 05 · Vocal Balance",q:"מה היית עושה קודם כדי לשפר את המיקס?",answers:["מאזנת מחדש את השירה מול הפלייבק","מוסיפה עוד ריוורב","מגבירה את כל הערוצים","מחליפה את כל הסאונד"],correct:0,tip:"הרבה פעמים התיקון הכי מקצועי הוא לא פלאגין, אלא איזון נכון."},
+{type:"בחירת פתרון",track:"Track 06 · Muddy Mix",q:"מה היית עושה קודם כדי לשפר את המיקס?",answers:["מנקה בעדינות עומס בתדרים הנמוכים-אמצעיים","מוסיפה דיסטורשן","מורידה את כל הבס","מגבירה את השירה בלבד"],correct:0,tip:"ניקוי עדין עדיף על פעולה קיצונית. מיקס טוב נבנה מדקויות."},
+{type:"בחירת פתרון",track:"Track 07 · Emotional Chorus",q:"מה היית עושה קודם כדי לשפר את המיקס?",answers:["בונה את הפזמון עם שכבות ואוטומציה","משאירה את כל השיר באותה עוצמה","מייבשת לגמרי את השירה","מורידה את הקולות בפזמון"],correct:0,tip:"פזמון צריך להרגיש כמו התקדמות. לפעמים השדרוג הוא בנייה, לא תיקון."},
+{type:"בחירת פתרון",track:"Track 08 · Style Match",q:"מה היית עושה קודם כדי לשפר את המיקס?",answers:["בודקת אם הסאונד מתאים לרגש ולסגנון השיר","מוסיפה את אותו אפקט על כל הערוצים","משנה טמפו","מגבירה את המיקס עד שיישמע חזק"],correct:0,tip:"מיקס מקצועי הוא לא רק נקי. הוא צריך להתאים לסוג השיר ולתחושה שהוא אמור ליצור."}
 ];
-
-let current = 0;
-let score = 0;
-let correctCount = 0;
-let answered = false;
-
-const $ = id => document.getElementById(id);
-
-function init(){
-  const meter = $("meter");
-  meter.innerHTML = "";
-  for(let i=0;i<8;i++){
-    const s=document.createElement("div");
-    s.className="seg";
-    meter.appendChild(s);
-  }
-  const bars = $("bars");
-  bars.innerHTML = "";
-  for(let i=0;i<74;i++){
-    const b=document.createElement("div");
-    b.className="bar";
-    b.style.height=(22+Math.random()*95)+"px";
-    b.style.animationDelay=(Math.random()*0.9)+"s";
-    bars.appendChild(b);
-  }
-  renderTrackList();
-}
-function startGame(){
-  $("intro").classList.remove("active");
-  $("game").classList.add("active");
-  render();
-}
-function render(){
-  answered=false;
-  const item=questions[current];
-  $("stepText").textContent=`קטע ${current+1} מתוך ${questions.length}`;
-  $("miniStep").textContent=`${current+1}/8`;
-  $("questionType").textContent=item.type;
-  $("trackName").textContent=item.track;
-  $("question").textContent=item.q;
-  $("popup").style.display="none";
-  $("progressFill").style.width="0";
-  $("answers").innerHTML="";
-  item.answers.forEach((a,i)=>{
-    const btn=document.createElement("button");
-    btn.className="answer";
-    btn.textContent=a;
-    btn.onclick=()=>choose(i,btn);
-    $("answers").appendChild(btn);
-  });
-  renderTrackList();
-}
-function choose(index, btn){
-  if(answered) return;
-  answered=true;
-  const item=questions[current];
-  const buttons=[...document.querySelectorAll(".answer")];
-  const popup=$("popup");
-  if(index===item.correct){
-    correctCount++;
-    score += 15;
-    btn.classList.add("correct");
-    $("points").textContent=score;
-    animatePlus();
-    updateMeter();
-    soundGood();
-    flash("good");
-    popup.className="popup good";
-    popup.innerHTML=`<div class="popupTitle">🎚️ מדויק!</div>
-      <div>+15 נקודות</div>
-      <div class="tip">💡 <b>הטיפ של יהודית:</b><br>${item.tip}</div>
-      <button class="nextBtn" onclick="next()">לקטע הבא ←</button>`;
-  } else {
-    btn.classList.add("wrong");
-    buttons[item.correct].classList.add("correct");
-    soundBad();
-    flash("bad");
-    popup.className="popup bad";
-    popup.innerHTML=`<div class="popupTitle">🎧 כמעט...</div>
-      <div>התשובה המדויקת: <b>${item.answers[item.correct]}</b></div>
-      <div class="tip">💡 <b>הטיפ של יהודית:</b><br>${item.tip}</div>
-      <button class="nextBtn" onclick="next()">לקטע הבא ←</button>`;
-  }
-  popup.style.display="block";
-  updateSide();
-}
-function next(){
-  current++;
-  if(current>=questions.length) finish();
-  else render();
-}
-function updateMeter(){
-  const filled=Math.min(8, Math.round(score/15));
-  document.querySelectorAll(".seg").forEach((s,i)=>s.classList.toggle("on",i<filled));
-  $("level").textContent = rankText();
-}
-function updateSide(){
-  const acc = current+1 ? Math.round((correctCount/(current+1))*100) : 0;
-  $("accuracy").textContent=acc+"%";
-  renderTrackList();
-}
-function rankText(){
-  if(score < 45) return "אולפניסטית מתחילה";
-  if(score < 75) return "אולפניסטית מתקדמת";
-  if(score < 105) return "אולפניסטית מקצועית";
-  return "אוזן של מפיקה";
-}
-function rankEmoji(){
-  if(score < 45) return "🎧 אולפניסטית מתחילה";
-  if(score < 75) return "🎧🎧 אולפניסטית מתקדמת";
-  if(score < 105) return "🎧🎧🎧 אולפניסטית מקצועית";
-  return "🎧🎧🎧🎧 אוזן של מפיקה";
-}
-function renderTrackList(){
-  const list=$("trackList");
-  if(!list) return;
-  list.innerHTML="";
-  questions.forEach((q,i)=>{
-    const d=document.createElement("div");
-    d.className="trackItem"+(i<current?" done":"")+(i===current?" current":"");
-    d.innerHTML=`<span>${i+1}. ${q.type}</span><span>${i<current?"✓":i===current?"●":"○"}</span>`;
-    list.appendChild(d);
-  });
-}
-function finish(){
-  $("game").classList.remove("active");
-  $("final").classList.add("active");
-  $("finalScore").textContent=score+" נקודות";
-  $("finalRank").textContent=rankEmoji();
-  $("certScore").textContent=score+" נקודות";
-  $("certRank").textContent=rankText();
-  $("certDate").textContent=new Date().toLocaleDateString("he-IL");
-  soundFinish();
-}
-function restart(){
-  current=0; score=0; correctCount=0; answered=false;
-  $("points").textContent=0;
-  $("accuracy").textContent="0%";
-  $("level").textContent="אולפניסטית מתחילה";
-  document.querySelectorAll(".seg").forEach(s=>s.classList.remove("on"));
-  $("final").classList.remove("active");
-  $("intro").classList.add("active");
-  renderTrackList();
-}
-function downloadCertificate(){
-  window.print();
-}
-function animatePlus(){
-  const p=$("plus");
-  p.classList.remove("pop");
-  void p.offsetWidth;
-  p.classList.add("pop");
-}
-function flash(type){
-  document.body.classList.add(type==="good" ? "flash-good" : "flash-bad");
-  setTimeout(()=>document.body.classList.remove("flash-good","flash-bad"),450);
-}
-function playPreview(){
-  const w=$("wave");
-  const f=$("progressFill");
-  w.classList.add("playing");
-  f.style.width="100%";
-  soundPreview();
-  setTimeout(()=>{w.classList.remove("playing"); f.style.width="0";},1200);
-}
-function ctx(){
-  if(!window.audioCtx) window.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  return window.audioCtx;
-}
-function tone(freq, dur=.09, vol=.07, type="sine"){
-  const c=ctx();
-  const o=c.createOscillator();
-  const g=c.createGain();
-  o.type=type;
-  o.frequency.value=freq;
-  g.gain.value=vol;
-  o.connect(g); g.connect(c.destination);
-  o.start();
-  g.gain.exponentialRampToValueAtTime(0.0001, c.currentTime+dur);
-  o.stop(c.currentTime+dur);
-}
-function soundGood(){ tone(523,.08,.07); setTimeout(()=>tone(784,.12,.07),95); }
-function soundBad(){ tone(220,.10,.055,"triangle"); setTimeout(()=>tone(165,.12,.05,"triangle"),110); }
-function soundPreview(){ tone(180,.05,.035); setTimeout(()=>tone(240,.06,.035),70); }
-function soundFinish(){ tone(523,.1,.06); setTimeout(()=>tone(659,.1,.06),120); setTimeout(()=>tone(784,.16,.06),240); }
-
+let current=0,score=0,correctCount=0,answered=false;const $=id=>document.getElementById(id);
+function init(){for(let i=0;i<8;i++){const s=document.createElement("div");s.className="seg";$("meter").appendChild(s)}for(let i=0;i<78;i++){const b=document.createElement("div");b.className="bar";b.style.height=(22+Math.random()*110)+"px";b.style.animationDelay=(Math.random()*0.9)+"s";$("bars").appendChild(b)}}
+function startGame(){$("intro").classList.remove("active");$("game").classList.add("active");render()}
+function render(){answered=false;const q=questions[current];$("stepText").textContent=`קטע ${current+1} מתוך ${questions.length}`;$("typeText").textContent=q.type;$("trackName").textContent=q.track;$("question").textContent=q.q;$("progressFill").style.width="0";$("answers").innerHTML="";q.answers.forEach((a,i)=>{const btn=document.createElement("button");btn.className="answer";btn.textContent=a;btn.onclick=()=>choose(i,btn);$("answers").appendChild(btn)})}
+function choose(i,btn){if(answered)return;answered=true;const q=questions[current];const buttons=[...document.querySelectorAll(".answer")];if(i===q.correct){correctCount++;score+=15;btn.classList.add("correct");$("points").textContent=score;animatePlus();flyCoin();updateMeter();soundGood();flash("good");showModal(true,q.tip)}else{btn.classList.add("wrong");buttons[q.correct].classList.add("correct");soundBad();flash("bad");showModal(false,q.tip,q.answers[q.correct])}}
+function showModal(ok,tip,correctText=""){$("modalIcon").textContent=ok?"🏆":"🎧";$("modalTitle").textContent=ok?"🎚️ מדויק!":"כמעט...";$("modalText").innerHTML=ok?"+15 נקודות":`התשובה המדויקת: <b>${correctText}</b>`;$("modalTip").innerHTML=`💡 <b>הטיפ של יהודית:</b><br>${tip}`;$("modalOverlay").style.display="flex"}
+function next(){$("modalOverlay").style.display="none";current++;if(current>=questions.length)finish();else render()}
+function updateMeter(){const filled=Math.min(8,Math.round(score/15));document.querySelectorAll(".seg").forEach((s,i)=>s.classList.toggle("on",i<filled));$("level").textContent=rankText()}
+function rankText(){if(score<45)return"אולפניסטית מתחילה";if(score<75)return"אולפניסטית מתקדמת";if(score<105)return"אולפניסטית מקצועית";return"אוזן של מפיקה"}
+function rankEmoji(){if(score<45)return"🎧 אולפניסטית מתחילה";if(score<75)return"🎧🎧 אולפניסטית מתקדמת";if(score<105)return"🎧🎧🎧 אולפניסטית מקצועית";return"🎧🎧🎧🎧 אוזן של מפיקה"}
+function strength(){if(correctCount>=7)return"דיוק גבוה בזיהוי בעיות וקבלת החלטות מקצועית.";if(correctCount>=5)return"הקשבה טובה וזיהוי נכון של בעיות מרכזיות במיקס.";if(correctCount>=3)return"יכולת התחלתית טובה לשמוע מה מפריע במיקס.";return"רגישות שמיעה ראשונית ורצון להבין לעומק את עולם המיקס."}
+function finish(){$("game").classList.remove("active");$("final").classList.add("active");$("finalScore").textContent=score+" נקודות";$("finalRank").textContent=rankEmoji();$("strengthText").textContent=strength();$("certScore").textContent=score+" נקודות";$("certRank").textContent=rankText();$("certStrength").textContent=strength();$("certDate").textContent=new Date().toLocaleDateString("he-IL");soundFinish()}
+function restart(){current=0;score=0;correctCount=0;answered=false;$("points").textContent=0;$("level").textContent="אולפניסטית מתחילה";document.querySelectorAll(".seg").forEach(s=>s.classList.remove("on"));$("final").classList.remove("active");$("intro").classList.add("active")}
+function downloadCertificate(){window.print()}function animatePlus(){const p=$("plus");p.classList.remove("pop");void p.offsetWidth;p.classList.add("pop")}function flyCoin(){const c=$("coin");c.classList.remove("fly");void c.offsetWidth;c.classList.add("fly")}function flash(type){document.body.classList.add(type==="good"?"flash-good":"flash-bad");setTimeout(()=>document.body.classList.remove("flash-good","flash-bad"),450)}
+function playPreview(){$("wave").classList.add("playing");$("progressFill").style.width="100%";soundPreview();setTimeout(()=>{$("wave").classList.remove("playing");$("progressFill").style.width="0"},1150)}
+function ctx(){if(!window.audioCtx)window.audioCtx=new (window.AudioContext||window.webkitAudioContext)();return window.audioCtx}
+function tone(freq,dur=.10,vol=.07,type="sine"){const c=ctx(),o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.value=freq;g.gain.value=vol;o.connect(g);g.connect(c.destination);o.start();g.gain.exponentialRampToValueAtTime(0.0001,c.currentTime+dur);o.stop(c.currentTime+dur)}
+function soundGood(){tone(523,.08,.075);setTimeout(()=>tone(784,.13,.075),95)}function soundBad(){tone(220,.11,.055,"triangle");setTimeout(()=>tone(165,.13,.05,"triangle"),110)}function soundPreview(){tone(185,.05,.035);setTimeout(()=>tone(245,.06,.035),70)}function soundFinish(){tone(523,.1,.06);setTimeout(()=>tone(659,.1,.06),120);setTimeout(()=>tone(784,.16,.06),240)}
 init();
 </script>
 </body>
