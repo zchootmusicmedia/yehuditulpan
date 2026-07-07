@@ -54,7 +54,7 @@ body.flash-bad{animation:badFlash .45s ease}
   align-items:center;
   justify-content:space-between;
   gap:16px;
-  padding:10px 16px;
+  padding:8px 14px;
   background:linear-gradient(90deg,rgba(24,25,31,.98),rgba(12,13,16,.98));
   border-bottom:1px solid var(--line);
   backdrop-filter:blur(16px);
@@ -140,12 +140,15 @@ body.flash-bad{animation:badFlash .45s ease}
 .screen{display:none}
 .screen.active{display:block}
 .intro{
-  min-height:calc(100vh - 105px);
-  display:flex;
+  min-height:calc(100vh - 96px);
+  display:none;
   align-items:center;
   justify-content:center;
   text-align:center;
-  padding:22px;
+  padding:16px;
+}
+.intro.active{
+  display:flex;
 }
 .hero{
   width:min(720px,100%);
@@ -162,9 +165,9 @@ body.flash-bad{animation:badFlash .45s ease}
   margin:0 auto;
 }
 .hero h2{
-  font-size:46px;
+  font-size:40px;
   line-height:1.12;
-  margin:22px 0 24px;
+  margin:18px 0 22px;
 }
 .btn{
   border:none;
@@ -231,7 +234,7 @@ body.flash-bad{animation:badFlash .45s ease}
 @keyframes bubbleFly{to{opacity:0;transform:scale(2.4)}}
 
 .game{
-  padding:18px;
+  padding:12px 18px 18px;
 }
 .gamePanel{
   max-width:920px;
@@ -282,7 +285,7 @@ body.flash-bad{animation:badFlash .45s ease}
 .led:nth-child(3){background:#28c840}
 .wave{
   position:relative;
-  height:128px;
+  height:108px;
   border-radius:18px;
   background:linear-gradient(180deg,#191a21,#07080b);
   border:1px solid rgba(255,255,255,.1);
@@ -358,7 +361,7 @@ body.flash-bad{animation:badFlash .45s ease}
 }
 .question{
   margin:0 0 15px;
-  font-size:29px;
+  font-size:27px;
   line-height:1.25;
   text-align:center;
 }
@@ -373,7 +376,7 @@ body.flash-bad{animation:badFlash .45s ease}
   color:white;
   border-radius:16px;
   padding:16px;
-  min-height:64px;
+  min-height:56px;
   font-size:17px;
   text-align:right;
   cursor:pointer;
@@ -423,7 +426,7 @@ body.flash-bad{animation:badFlash .45s ease}
   justify-content:center;
   margin:0 auto 12px;
   color:#1b1200;
-  font-size:46px;
+  font-size:40px;
   background:linear-gradient(135deg,var(--gold),var(--gold2));
   box-shadow:0 0 38px rgba(241,201,91,.28);
 }
@@ -572,7 +575,7 @@ body.flash-bad{animation:badFlash .45s ease}
   font-weight:950;
   box-shadow:0 14px 34px rgba(0,0,0,.14);
 }
-#certificate h1{font-size:46px;margin:14px 0 8px}
+#certificate h1{font-size:40px;margin:14px 0 8px}
 #certificate h2{font-size:25px;font-weight:500;color:#333;margin:8px 0 18px}
 .certRank{
   font-size:36px;
@@ -630,6 +633,13 @@ body.flash-bad{animation:badFlash .45s ease}
     100%{opacity:0;transform:translate(-120px,-390px) scale(1.18) rotate(360deg)}
   }
 }
+
+.playBtn{animation:softPulse 2s infinite ease-in-out}
+@keyframes softPulse{0%,100%{box-shadow:0 0 28px rgba(215,43,53,.28)}50%{box-shadow:0 0 48px rgba(241,201,91,.30)}}
+.answer{position:relative;overflow:hidden}
+.answer:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent);transform:translateX(120%);transition:.5s}
+.answer:hover:before{transform:translateX(-120%)}
+
 </style>
 </head>
 <body>
@@ -756,7 +766,7 @@ body.flash-bad{animation:badFlash .45s ease}
 const questions = [
   {
     type:"זיהוי בעיה",
-    track:"משימה 1 · ניקיון ההקלטה",
+    track:"קטע שמע 1",
     audio:"audio/clip1_batmitzvah.mp3",
     q:"מה הבעיה הבולטת ביותר במיקס?",
     correct:"יש לכלוך בתחילת הקטע.",
@@ -770,7 +780,7 @@ const questions = [
   },
   {
     type:"זיהוי בעיה",
-    track:"משימה 2 · באלאנס",
+    track:"קטע שמע 2",
     audio:"audio/clip2_darkei_rachel.mp3",
     q:"מה הכי מפריע במיקס ששמעת עכשיו?",
     correct:"הבאלאנס לא מאוזן – הסולנית בולטת מדי ביחס לפלייבק.",
@@ -784,7 +794,7 @@ const questions = [
   },
   {
     type:"זיהוי בעיה",
-    track:"משימה 3 · EQ",
+    track:"קטע שמע 3",
     audio:"audio/clip3_vehi.mp3",
     q:"מה הבעיה במיקס ששמעת עכשיו?",
     correct:"הסאונד חלול בגלל עודף תדרים גבוהים ב־EQ.",
@@ -798,7 +808,7 @@ const questions = [
   },
   {
     type:"זיהוי בעיה",
-    track:"משימה 4 · סטוריישן",
+    track:"קטע שמע 4",
     audio:"audio/clip4_tzfat5.mp3",
     q:"מה הבעיה הבולטת ביותר במיקס?",
     correct:"יש יותר מדי סטוריישן במיקס.",
@@ -812,7 +822,7 @@ const questions = [
   },
   {
     type:"זיהוי בעיה",
-    track:"משימה 5 · סיבילנס",
+    track:"קטע שמע 5",
     audio:"audio/clip5_malki.mp3",
     q:"מה הכי מפריע במיקס ששמעת עכשיו?",
     correct:"יש סיבילנס בולט בשירה.",
@@ -826,7 +836,7 @@ const questions = [
   },
   {
     type:"בחירת תיקון",
-    track:"משימה 6 · שילוב השירה בפלייבק",
+    track:"קטע שמע 6",
     audio:"audio/clip6_tzeakot.mp3",
     q:"מה היית עושה כדי לשלב טוב יותר את השירה בפלייבק?",
     correct:"משנה את סוג הריוורב או את כמות הריוורב כדי שהשירה תשתלב טוב יותר בפלייבק.",
@@ -840,7 +850,7 @@ const questions = [
   },
   {
     type:"זיהוי בעיה",
-    track:"משימה 7 · ריוורב",
+    track:"קטע שמע 7",
     audio:"audio/clip7_mishmish.mp3",
     q:"מה הבעיה במיקס ששמעת עכשיו?",
     correct:"יש יותר מדי ריוורב על השירה.",
@@ -889,6 +899,7 @@ function startGame(){
     $("intro").classList.remove("active");
     $("game").classList.add("active");
     render();
+    window.scrollTo({top:0,behavior:"smooth"});
   },1250);
 }
 function showSplash(){
@@ -1088,7 +1099,7 @@ function ctx(){
   if(!window.audioCtx) window.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   return window.audioCtx;
 }
-function tone(freq,dur=.1,vol=.07,type="sine"){
+function tone(freq,dur=.1,vol=.07,type="sine",delay=0){
   const c = ctx();
   const o = c.createOscillator();
   const g = c.createGain();
@@ -1097,13 +1108,16 @@ function tone(freq,dur=.1,vol=.07,type="sine"){
   g.gain.value = vol;
   o.connect(g);
   g.connect(c.destination);
-  o.start();
-  g.gain.exponentialRampToValueAtTime(0.0001,c.currentTime + dur);
-  o.stop(c.currentTime + dur);
+  const t = c.currentTime + delay;
+  o.start(t);
+  g.gain.setValueAtTime(vol,t);
+  g.gain.exponentialRampToValueAtTime(0.0001,t + dur);
+  o.stop(t + dur);
 }
 function soundGood(){
-  tone(523,.08,.075);
-  setTimeout(()=>tone(784,.13,.075),95);
+  tone(659,.13,.18,"sine",0);
+  tone(987,.18,.16,"sine",.10);
+  tone(1318,.28,.12,"triangle",.20);
 }
 function soundBad(){
   tone(220,.11,.055,"triangle");
