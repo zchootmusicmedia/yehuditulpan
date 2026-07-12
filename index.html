@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mix Check | יהודית שיינשניידר</title>
 <style>
+@import url("https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800;900&display=swap");
 :root{
   --bg:#08080b;
   --panel:#111216;
@@ -23,7 +24,7 @@
 body{
   margin:0;
   min-height:100vh;
-  font-family:Arial,"Noto Sans Hebrew",sans-serif;
+  font-family:"Heebo",Arial,sans-serif;
   color:var(--text);
   background:
     radial-gradient(circle at 10% 8%, rgba(215,43,53,.22), transparent 30%),
@@ -37,9 +38,9 @@ body.flash-bad{animation:badFlash .45s ease}
 @keyframes badFlash{0%{box-shadow:inset 0 0 0 9999px rgba(255,107,117,.14)}100%{box-shadow:none}}
 
 .app{
-  width:min(1080px,calc(100% - 24px));
+  width:min(1080px,calc(100%, 24px));
   margin:12px auto;
-  min-height:calc(100vh - 24px);
+  min-height:calc(100vh, 24px);
   border:1px solid var(--line);
   border-radius:26px;
   background:rgba(11,12,15,.92);
@@ -140,7 +141,7 @@ body.flash-bad{animation:badFlash .45s ease}
 .screen{display:none}
 .screen.active{display:block}
 .intro{
-  min-height:calc(100vh - 96px);
+  min-height:calc(100vh, 96px);
   display:none;
   align-items:center;
   justify-content:center;
@@ -540,7 +541,7 @@ body.flash-bad{animation:badFlash .45s ease}
   padding:44px;
   text-align:center;
   direction:rtl;
-  font-family:Arial,sans-serif;
+  font-family:"Heebo",Arial,sans-serif;
 }
 .certFrame{
   min-height:1015px;
@@ -720,7 +721,7 @@ body.flash-bad{animation:badFlash .45s ease}
     <div class="finalGrid">
       <div class="analysis"><b>החוזקה שלך</b><br><span id="strengthText"></span></div>
       <div class="analysis"><b>מה כדאי לחזק</b><br>דיוק באבחון לפני בחירת פעולה, והקשבה לשאלה: מה באמת הכי מפריע במיקס?</div>
-      <div class="analysis"><b>המלצת יהודית</b><br>מיקס טוב מתחיל הרבה לפני הפלאגין הראשון. קודם דואגים להקלטה טובה, אחר כך לעריכה מדויקת, ורק כשהכול נשמע טוב ויושב נכון יחד – עוברים לשלב המיקס.</div>
+      <div class="analysis"><b>המלצת יהודית</b><br>מיקס טוב מתחיל הרבה לפני הפלאגין הראשון. קודם דואגים להקלטה טובה, אחר כך לעריכה מדויקת, ורק כשהכול נשמע טוב ויושב נכון יחד, עוברים לשלב המיקס.</div>
       <div class="analysis"><b>השלב הבא</b><br>לחדד את סדר החשיבה: קודם אבחון, אחר כך פעולה. זה מה שמייצר מיקס מקצועי יותר.</div>
     </div>
 
@@ -784,10 +785,10 @@ const questions = [
     track:"קטע שמע 2",
     audio:"audio/clip2_darkei_rachel.mp3",
     q:"מה הכי מפריע במיקס ששמעת עכשיו?",
-    correct:"הבאלאנס לא מאוזן – הסולנית בולטת מדי ביחס לפלייבק.",
+    correct:"הבאלאנס לא מאוזן, הסולנית בולטת מדי ביחס לפלייבק.",
     answers:[
       "יש יותר מדי ריוורב על השירה.",
-      "הבאלאנס לא מאוזן – הסולנית בולטת מדי ביחס לפלייבק.",
+      "הבאלאנס לא מאוזן, הסולנית בולטת מדי ביחס לפלייבק.",
       "יש יותר מדי סטוריישן במיקס.",
       "הסאונד חלול בגלל עודף תדרים גבוהים."
     ],
@@ -911,8 +912,8 @@ function showSplash(){
     e.className = i%3 ? "star" : "bubble";
     e.style.left = (48 + Math.random()*4) + "%";
     e.style.top = (48 + Math.random()*4) + "%";
-    e.style.setProperty("--x",(Math.random()*900 - 450) + "px");
-    e.style.setProperty("--y",(Math.random()*600 - 300) + "px");
+    e.style.setProperty("--x",(Math.random()*900, 450) + "px");
+    e.style.setProperty("--y",(Math.random()*600, 300) + "px");
     const size = 7 + Math.random()*34;
     e.style.width = size + "px";
     e.style.height = size + "px";
