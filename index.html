@@ -641,6 +641,116 @@ body.flash-bad{animation:badFlash .45s ease}
 .answer:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent);transform:translateX(120%);transition:.5s}
 .answer:hover:before{transform:translateX(-120%)}
 
+
+.nextStage{
+  max-width:920px;
+  margin:26px auto 0;
+  border:1px solid rgba(241,201,91,.34);
+  border-radius:24px;
+  padding:24px;
+  background:linear-gradient(180deg,rgba(241,201,91,.08),rgba(255,255,255,.03));
+  text-align:right;
+}
+.nextStage h2{
+  margin:0 0 14px;
+  font-size:32px;
+}
+.nextStage p{
+  line-height:1.75;
+  color:#ededf1;
+}
+.nextChoices{
+  display:grid;
+  gap:14px;
+  margin-top:18px;
+}
+.choiceCard{
+  position:relative;
+  display:block;
+  padding:20px 58px 20px 20px;
+  border-radius:18px;
+  background:rgba(255,255,255,.055);
+  border:1px solid rgba(255,255,255,.11);
+  color:#fff;
+  text-decoration:none;
+  transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease,background .2s ease;
+  cursor:pointer;
+}
+.choiceCard:hover{
+  transform:translateY(-4px);
+  border-color:rgba(215,43,53,.8);
+  box-shadow:0 16px 34px rgba(215,43,53,.18);
+  background:rgba(215,43,53,.10);
+}
+.choiceCard:focus-visible{
+  outline:3px solid rgba(241,201,91,.75);
+  outline-offset:3px;
+}
+.choiceTitle{
+  font-size:21px;
+  font-weight:900;
+  margin-bottom:8px;
+}
+.choiceText{
+  line-height:1.65;
+  color:#e7e7eb;
+}
+.clickHint{
+  position:absolute;
+  top:18px;
+  right:18px;
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(241,201,91,.14);
+  color:var(--gold);
+  font-size:17px;
+  transition:transform .2s ease,background .2s ease;
+}
+.choiceCard:hover .clickHint{
+  transform:scale(1.12);
+  background:rgba(241,201,91,.23);
+}
+.consent{
+  margin-top:10px;
+  color:#ffdca0;
+  font-weight:700;
+}
+.contactStrip{
+  max-width:920px;
+  margin:18px auto 0;
+  padding:18px 20px;
+  border-radius:18px;
+  background:linear-gradient(135deg,#d72b35,#b51e28);
+  text-align:center;
+  box-shadow:0 16px 36px rgba(215,43,53,.20);
+}
+.contactStrip h3{
+  margin:0 0 10px;
+  font-size:22px;
+}
+.contactLinks{
+  display:flex;
+  justify-content:center;
+  gap:20px;
+  flex-wrap:wrap;
+}
+.contactLinks a{
+  color:#fff;
+  text-decoration:none;
+  font-weight:800;
+}
+.contactLinks a:hover{
+  text-decoration:underline;
+}
+@media(max-width:700px){
+  .choiceCard{padding:18px 50px 18px 16px}
+  .nextStage h2{font-size:27px}
+}
+
 </style>
 </head>
 <body>
@@ -727,8 +837,8 @@ body.flash-bad{animation:badFlash .45s ease}
 
     <div style="margin:28px auto;max-width:920px;border:1px solid rgba(241,201,91,.35);border-radius:22px;padding:24px;background:linear-gradient(180deg,rgba(241,201,91,.08),rgba(255,255,255,.03));text-align:right">
 <h2 style="margin-top:0">לאן ממשיכים מכאן?</h2>
-<p>אם הצלחת לזהות חלק מהטעויות שבדוגמאות – מצוין. ואם היו כאלה שהפתיעו אותך, גם זה מצוין.</p>
-<p>המטרה של המגנט הזה לא הייתה ללמד אותך למקסס, אלא לפתוח לך צורת חשיבה אחרת. להראות שמאחורי כל החלטה במיקס עומדת דרך עבודה מסודרת, ושמיקס טוב לא מתחיל בפלאגינים – הוא מתחיל באוזניים שיודעות להקשיב, לזהות ולהבין מה באמת צריך.</p>
+<p>אם הצלחת לזהות חלק מהטעויות שבדוגמאות, מצוין. ואם היו כאלה שהפתיעו אותך, גם זה מצוין.</p>
+<p>המטרה של המגנט הזה לא הייתה ללמד אותך למקסס, אלא לפתוח לך צורת חשיבה אחרת. להראות שמאחורי כל החלטה במיקס עומדת דרך עבודה מסודרת, ושמיקס טוב לא מתחיל בפלאגינים, הוא מתחיל באוזניים שיודעות להקשיב, לזהות ולהבין מה באמת צריך.</p>
 <div style="display:grid;gap:12px">
 <div style="padding:14px;border-radius:16px;background:rgba(255,255,255,.05)"><b>🎯 בואי נדייק את המיקס שלך</b><br>בפגישת ייעוץ אישית נעבור יחד על המיקסים שלך, נזהה מה מעכב אותם ונבנה דרך עבודה שתעזור לך להוציא מהם הרבה יותר.</div>
 <div style="padding:14px;border-radius:16px;background:rgba(255,255,255,.05)"><b>🎚 יש לך פרויקט שחשוב לך שיישמע במיטבו?</b><br>אפשר להעביר אותו למיקס מקצועי, עם דגש על דיוק, איזון והקשבה לכל פרט.</div>
@@ -740,10 +850,51 @@ body.flash-bad{animation:badFlash .45s ease}
 <div>📱 053-317-7451</div>
 </div>
 </div>
+
 <div class="actions">
-      <button class="btn gold" onclick="downloadCertificate()">הורדת תעודה PDF</button>
-      <button class="btn dark" onclick="restart()">להתחיל מחדש</button>
-    </div>
+  <button class="btn gold" onclick="downloadCertificate()">הורדת תעודה PDF</button>
+  <button class="btn dark" onclick="restart()">להתחיל מחדש</button>
+</div>
+
+<div class="nextStage">
+  <h2>ממשיכים לשלב הבא</h2>
+
+  <p>אם הצלחת לזהות חלק מהטעויות שבדוגמאות, מצוין. ואם היו כאלה שהפתיעו אותך, גם זה מצוין.</p>
+
+  <p>המטרה של המגנט הזה לא הייתה ללמד אותך למקסס, אלא לפתוח לך צורת חשיבה אחרת. להראות שמאחורי כל החלטה במיקס עומדת דרך עבודה מסודרת, ושמיקס טוב לא מתחיל בפלאגינים, הוא מתחיל באוזניים שיודעות להקשיב, לזהות ולהבין מה באמת צריך.</p>
+
+  <p><b>אם זה דיבר אלייך, הנה כמה דרכים להמשיך, אפשר לבחור את הצעד שהכי מתאים לך:</b></p>
+
+  <div class="nextChoices">
+    <a class="choiceCard" href="mailto:yehuditsh100@gmail.com?subject=%D7%90%D7%A0%D7%99%20%D7%9E%D7%A2%D7%95%D7%A0%D7%99%D7%99%D7%A0%D7%AA%20%D7%91%D7%A4%D7%92%D7%99%D7%A9%D7%AA%20%D7%99%D7%99%D7%A2%D7%95%D7%A5&body=%D7%A9%D7%9C%D7%95%D7%9D%20%D7%99%D7%94%D7%95%D7%93%D7%99%D7%AA%2C%0A%0A%D7%A1%D7%99%D7%99%D7%9E%D7%AA%D7%99%20%D7%90%D7%AA%20Mix%20Check%20%D7%95%D7%94%D7%99%D7%99%D7%AA%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A2%D7%9C%20%D7%A4%D7%92%D7%99%D7%A9%D7%AA%20%D7%99%D7%99%D7%A2%D7%95%D7%A5.%0A%0A%D7%AA%D7%95%D7%93%D7%94%21">
+      <span class="clickHint">✦</span>
+      <div class="choiceTitle">בואי נדייק את המיקס שלך</div>
+      <div class="choiceText">בפגישת ייעוץ אישית נעבור יחד על המיקסים שלך, נזהה מה מעכב אותם ונבנה דרך עבודה שתעזור לך להוציא מהם הרבה יותר.</div>
+    </a>
+
+    <a class="choiceCard" href="mailto:yehuditsh100@gmail.com?subject=%D7%90%D7%A0%D7%99%20%D7%9E%D7%A2%D7%95%D7%A0%D7%99%D7%99%D7%A0%D7%AA%20%D7%91%D7%9E%D7%99%D7%A7%D7%A1%20%D7%9E%D7%A7%D7%A6%D7%95%D7%A2%D7%99&body=%D7%A9%D7%9C%D7%95%D7%9D%20%D7%99%D7%94%D7%95%D7%93%D7%99%D7%AA%2C%0A%0A%D7%99%D7%A9%20%D7%9C%D7%99%20%D7%A4%D7%A8%D7%95%D7%99%D7%A7%D7%98%20%D7%A9%D7%94%D7%99%D7%99%D7%AA%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%94%D7%A2%D7%91%D7%99%D7%A8%20%D7%9C%D7%9E%D7%99%D7%A7%D7%A1%20%D7%9E%D7%A7%D7%A6%D7%95%D7%A2%D7%99.%0A%0A%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D.%0A%0A%D7%AA%D7%95%D7%93%D7%94%21">
+      <span class="clickHint">✦</span>
+      <div class="choiceTitle">יש לך פרויקט שחשוב לך שיישמע במיטבו?</div>
+      <div class="choiceText">אפשר להעביר אותו למיקס מקצועי, עם דגש על דיוק, איזון והקשבה לכל פרט.</div>
+    </a>
+
+    <a class="choiceCard" href="mailto:yehuditsh100@gmail.com?subject=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%94%D7%A6%D7%98%D7%A8%D7%A3%20%D7%9C%D7%A0%D7%99%D7%95%D7%96%D7%9C%D7%98%D7%A8%2C%20%D7%94%D7%A0%D7%A7%D7%95%D7%93%D7%94%20%D7%94%D7%90%D7%93%D7%95%D7%9E%D7%94&body=%D7%A9%D7%9C%D7%95%D7%9D%20%D7%99%D7%94%D7%95%D7%93%D7%99%D7%AA%2C%0A%0A%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%94%D7%A6%D7%98%D7%A8%D7%A3%20%D7%9C%D7%A0%D7%99%D7%95%D7%96%D7%9C%D7%98%D7%A8%20%22%D7%94%D7%A0%D7%A7%D7%95%D7%93%D7%94%20%D7%94%D7%90%D7%93%D7%95%D7%9E%D7%94%22.%0A%0A%D7%90%D7%A0%D7%99%20%D7%9E%D7%90%D7%A9%D7%A8%D7%AA%20%D7%A7%D7%91%D7%9C%D7%AA%20%D7%93%D7%99%D7%95%D7%95%D7%A8%D7%99%D7%9D%20%D7%91%D7%9E%D7%99%D7%99%D7%9C.%0A%0A%D7%AA%D7%95%D7%93%D7%94%21">
+      <span class="clickHint">✦</span>
+      <div class="choiceTitle">רוצה להמשיך לפתח את האוזן המקצועית שלך?</div>
+      <div class="choiceText">בניוזלטר "הנקודה האדומה" אני משתפת באופן קבוע תובנות, דוגמאות מהאולפן ועקרונות עבודה שיעזרו לך לשפר את ההקשבה, את דרך החשיבה ואת איכות המיקסים שלך.</div>
+      <div class="consent">מאשרת קבלת דיוורים.</div>
+    </a>
+  </div>
+</div>
+
+<div class="contactStrip">
+  <h3>ליצירת קשר</h3>
+  <div class="contactLinks">
+    <a href="mailto:yehuditsh100@gmail.com">yehuditsh100@gmail.com</a>
+    <a href="tel:0533177451">0533177451</a>
+  </div>
+</div>
+
   </section>
 </div>
 
