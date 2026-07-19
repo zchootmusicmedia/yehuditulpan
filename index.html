@@ -1,8 +1,9 @@
-<!doctype html>
-<html lang="he" dir="rtl">
+<!DOCTYPE html>
+
+<html dir="rtl" lang="he">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
 <title>Mix Check | יהודית שיינשניידר</title>
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800;900&display=swap");
@@ -919,206 +920,169 @@ body.flash-bad{animation:badFlash .45s ease}
 }
 
 
-.final{padding-bottom:90px!important;overflow:visible!important}
-.contactPremium{margin-bottom:50px!important}
-body{padding-bottom:30px}
-
+.final{
+  padding-bottom:100px !important;
+  overflow:visible !important;
+}
+.contactPremium{
+  margin-bottom:50px !important;
+}
+body{
+  padding-bottom:35px;
+}
 </style>
 </head>
 <body>
 <audio id="audioPlayer" preload="auto"></audio>
-<audio id="successSound" src="audio/success.wav" preload="auto"></audio>
-
+<audio id="successSound" preload="auto" src="audio/success.wav"></audio>
 <div class="splash" id="splash">
-  <div class="splashLogo"><img src="logo.png" alt=""></div>
+<div class="splashLogo"><img alt="" src="logo.png"/></div>
 </div>
-
 <div class="app">
-  <header class="topbar">
-    <div class="brand">
-      <div class="logoBox"><img src="logo.png" alt="יהודית שיינשניידר"></div>
-      <div>
-        <h1>Mix Check</h1>
-        <div class="sub">סימולטור אבחון מיקס לאולפניסטיות</div>
-      </div>
-    </div>
-    <div class="hud">
-      <div class="hudCard">
-        <small>נקודות</small>
-        <div class="points" id="points">0</div>
-        <div class="plus" id="plus">+15</div>
-      </div>
-      <div class="hudCard meterCard">
-        <small>מד מקצועיות · <span class="level" id="level">אולפניסטית מתחילה</span></small>
-        <div class="meter" id="meter"></div>
-      </div>
-    </div>
-  </header>
-
-  <section class="screen intro active" id="intro">
-    <div class="hero">
-      <div class="logoBox"><img src="logo.png" alt=""></div>
-      <h2>האם האוזן שלך חושבת כמו אולפניסטית מקצועית?</h2>
-      <button class="btn" onclick="startGame()">התחילי את Mix Check</button>
-    </div>
-  </section>
-
-  <section class="screen" id="game">
-    <div class="game">
-      <div class="gamePanel">
-        <div class="gameTop">
-          <span class="pill" id="step">קטע 1 מתוך 7</span>
-          <span class="pill gold" id="type">זיהוי בעיה</span>
-        </div>
-
-        <div class="daw">
-          <div class="dawTop">
-            <span id="track">Track 01</span>
-            <span class="leds"><span class="led"></span><span class="led"></span><span class="led"></span></span>
-          </div>
-          <div class="wave" id="wave"><div class="bars" id="bars"></div></div>
-          <div class="playRow">
-            <button class="playBtn" id="playBtn" onclick="toggleAudio()">▶</button>
-            <div class="progressTrack"><div class="progressFill" id="progressFill"></div></div>
-          </div>
-        </div>
-
-        <div class="questionCard">
-          <h2 class="question" id="question"></h2>
-          <div class="answers" id="answers"></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="screen final" id="final">
-    <div class="finalHero">
-      <div class="logoBox"><img src="logo.png" alt=""></div>
-      <div style="font-weight:800;color:var(--muted)">דו״ח Mix Check</div>
-      <h2>סיימת את סימולטור אבחון המיקס</h2>
-      <div class="bigScore" id="finalScore">0 נקודות</div>
-      <div class="rank" id="finalRank">אולפניסטית מתחילה</div>
-    </div>
-
-    <div class="finalGrid">
-      <div class="analysis"><b>החוזקה שלך</b><br><span id="strengthText"></span></div>
-      <div class="analysis"><b>מה כדאי לחזק</b><br>דיוק באבחון לפני בחירת פעולה, והקשבה לשאלה: מה באמת הכי מפריע במיקס?</div>
-      <div class="analysis"><b>המלצת יהודית</b><br>מיקס טוב מתחיל הרבה לפני הפלאגין הראשון. קודם דואגים להקלטה טובה, אחר כך לעריכה מדויקת, ורק כשהכול נשמע טוב ויושב נכון יחד, עוברים לשלב המיקס.</div>
-      <div class="analysis"><b>השלב הבא</b><br>לחדד את סדר החשיבה: קודם אבחון, אחר כך פעולה. זה מה שמייצר מיקס מקצועי יותר.</div>
-    </div>
-
-    <div style="margin:28px auto;max-width:920px;border:1px solid rgba(241,201,91,.35);border-radius:22px;padding:24px;background:linear-gradient(180deg,rgba(241,201,91,.08),rgba(255,255,255,.03));text-align:right">
-<h2 style="margin-top:0">לאן ממשיכים מכאן?</h2>
-<p>אם הצלחת לזהות חלק מהטעויות שבדוגמאות, מצוין. ואם היו כאלה שהפתיעו אותך, גם זה מצוין.</p>
-<p>המטרה של המגנט הזה לא הייתה ללמד אותך למקסס, אלא לפתוח לך צורת חשיבה אחרת. להראות שמאחורי כל החלטה במיקס עומדת דרך עבודה מסודרת, ושמיקס טוב לא מתחיל בפלאגינים, הוא מתחיל באוזניים שיודעות להקשיב, לזהות ולהבין מה באמת צריך.</p>
-<div style="display:grid;gap:12px">
-<div style="padding:14px;border-radius:16px;background:rgba(255,255,255,.05)"><b>🎯 בואי נדייק את המיקס שלך</b><br>בפגישת ייעוץ אישית נעבור יחד על המיקסים שלך, נזהה מה מעכב אותם ונבנה דרך עבודה שתעזור לך להוציא מהם הרבה יותר.</div>
-<div style="padding:14px;border-radius:16px;background:rgba(255,255,255,.05)"><b>🎚 יש לך פרויקט שחשוב לך שיישמע במיטבו?</b><br>אפשר להעביר אותו למיקס מקצועי, עם דגש על דיוק, איזון והקשבה לכל פרט.</div>
-<div style="padding:14px;border-radius:16px;background:rgba(255,255,255,.05)"><b>📩 רוצה להמשיך לפתח את האוזן המקצועית שלך?</b><br>בניוזלטר <b>הנקודה האדומה</b> אני משתפת באופן קבוע תובנות, דוגמאות מהאולפן ועקרונות עבודה שיעזרו לך לשפר את ההקשבה, את דרך החשיבה ואת איכות המיקסים שלך.</div>
-</div>
-<div style="margin-top:20px;padding:18px;border-radius:18px;background:linear-gradient(135deg,#d72b35,#b81f29);text-align:center;color:#fff">
-<div style="font-size:22px;font-weight:800">יצירת קשר עם יהודית שיינשניידר</div>
-<div style="margin-top:8px">📧 yehuditsh100@gmail.com</div>
-<div>📱 053-317-7451</div>
+<header class="topbar">
+<div class="brand">
+<div class="logoBox"><img alt="יהודית שיינשניידר" src="logo.png"/></div>
+<div>
+<h1>Mix Check</h1>
+<div class="sub">סימולטור אבחון מיקס לאולפניסטיות</div>
 </div>
 </div>
-
-
-
-
+<div class="hud">
+<div class="hudCard">
+<small>נקודות</small>
+<div class="points" id="points">0</div>
+<div class="plus" id="plus">+15</div>
 </div>
-
-  
-
-
-
-
-
-
-
-<div class="resultActions">
-  <button class="btn gold" onclick="downloadCertificate()">הורדת תעודה PDF</button>
-  <button class="btn dark" onclick="restart()">להתחיל מחדש</button>
+<div class="hudCard meterCard">
+<small>מד מקצועיות · <span class="level" id="level">אולפניסטית מתחילה</span></small>
+<div class="meter" id="meter"></div>
 </div>
-<div class="nextStagePremium">
-  <div class="sectionTitle"><h2>ממשיכים לשלב הבא</h2></div>
-
-  <div class="nextStageIntro">
-    אם הצלחת לזהות חלק מהטעויות שבדוגמאות, מצוין. ואם היו כאלה שהפתיעו אותך, גם זה מצוין.
-    <br><br>
-    המטרה של המגנט הזה לא הייתה ללמד אותך למקסס, אלא לפתוח לך צורת חשיבה אחרת. להראות שמאחורי כל החלטה במיקס עומדת דרך עבודה מסודרת, ושמיקס טוב לא מתחיל בפלאגינים, הוא מתחיל באוזניים שיודעות להקשיב, לזהות ולהבין מה באמת צריך.
-    <br><br>
-    <b>בחרי את הצעד הבא שמתאים לך:</b>
-  </div>
-
-  <div class="nextStageGrid">
-    <a class="nextCard" style="--accent:#ff4b55" href="mailto:yehuditsh100@gmail.com?subject=%D7%90%D7%A0%D7%99%20%D7%9E%D7%A2%D7%95%D7%A0%D7%99%D7%99%D7%A0%D7%AA%20%D7%91%D7%A4%D7%92%D7%99%D7%A9%D7%AA%20%D7%99%D7%99%D7%A2%D7%95%D7%A5&body=%D7%A9%D7%9C%D7%95%D7%9D%20%D7%99%D7%94%D7%95%D7%93%D7%99%D7%AA%2C%0A%0A%D7%A1%D7%99%D7%99%D7%9E%D7%AA%D7%99%20%D7%90%D7%AA%20Mix%20Check%20%D7%95%D7%94%D7%99%D7%99%D7%AA%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A2%D7%9C%20%D7%A4%D7%92%D7%99%D7%A9%D7%AA%20%D7%99%D7%99%D7%A2%D7%95%D7%A5.%0A%0A%D7%AA%D7%95%D7%93%D7%94!">
-      <div class="nextIcon">◉</div>
-      <h3>בואי נדייק את המיקס שלך</h3>
-      <p>בפגישת ייעוץ אישית נעבור יחד על המיקסים שלך, נזהה מה מעכב אותם ונבנה דרך עבודה שתעזור לך להוציא מהם הרבה יותר.</p>
-      <div class="clickMark">↗</div>
-    </a>
-
-    <a class="nextCard" style="--accent:#f1c95b" href="mailto:yehuditsh100@gmail.com?subject=%D7%90%D7%A0%D7%99%20%D7%9E%D7%A2%D7%95%D7%A0%D7%99%D7%99%D7%A0%D7%AA%20%D7%91%D7%9E%D7%99%D7%A7%D7%A1%20%D7%9E%D7%A7%D7%A6%D7%95%D7%A2%D7%99&body=%D7%A9%D7%9C%D7%95%D7%9D%20%D7%99%D7%94%D7%95%D7%93%D7%99%D7%AA%2C%0A%0A%D7%99%D7%A9%20%D7%9C%D7%99%20%D7%A4%D7%A8%D7%95%D7%99%D7%A7%D7%98%20%D7%A9%D7%94%D7%99%D7%99%D7%AA%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%94%D7%A2%D7%91%D7%99%D7%A8%20%D7%9C%D7%9E%D7%99%D7%A7%D7%A1%20%D7%9E%D7%A7%D7%A6%D7%95%D7%A2%D7%99.%0A%0A%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D.%0A%0A%D7%AA%D7%95%D7%93%D7%94!">
-      <div class="nextIcon">≋</div>
-      <h3>יש לך פרויקט שחשוב לך שיישמע במיטבו?</h3>
-      <p>אפשר להעביר אותו למיקס מקצועי, עם דגש על דיוק, איזון והקשבה לכל פרט.</p>
-      <div class="clickMark">↗</div>
-    </a>
-
-    <a class="nextCard" style="--accent:#ff4b55" href="mailto:yehuditsh100@gmail.com?subject=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%94%D7%A6%D7%98%D7%A8%D7%A3%20%D7%9C%D7%A0%D7%99%D7%95%D7%96%D7%9C%D7%98%D7%A8%2C%20%D7%94%D7%A0%D7%A7%D7%95%D7%93%D7%94%20%D7%94%D7%90%D7%93%D7%95%D7%9E%D7%94&body=%D7%A9%D7%9C%D7%95%D7%9D%20%D7%99%D7%94%D7%95%D7%93%D7%99%D7%AA%2C%0A%0A%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%94%D7%A6%D7%98%D7%A8%D7%A3%20%D7%9C%D7%A0%D7%99%D7%95%D7%96%D7%9C%D7%98%D7%A8%20%22%D7%94%D7%A0%D7%A7%D7%95%D7%93%D7%94%20%D7%94%D7%90%D7%93%D7%95%D7%9E%D7%94%22.%0A%0A%D7%90%D7%A0%D7%99%20%D7%9E%D7%90%D7%A9%D7%A8%D7%AA%20%D7%A7%D7%91%D7%9C%D7%AA%20%D7%93%D7%99%D7%95%D7%95%D7%A8%D7%99%D7%9D%20%D7%91%D7%9E%D7%99%D7%99%D7%9C.%0A%0A%D7%AA%D7%95%D7%93%D7%94!">
-      <div class="nextIcon">✦</div>
-      <h3>רוצה להמשיך לפתח את האוזן המקצועית שלך?</h3>
-      <p>בניוזלטר "הנקודה האדומה" אני משתפת באופן קבוע תובנות, דוגמאות מהאולפן ועקרונות עבודה שיעזרו לך לשפר את ההקשבה, את דרך החשיבה ואת איכות המיקסים שלך.</p>
-      <div class="clickMark">↗</div>
-    </a>
-  </div>
 </div>
-<div class="contactPremium">
-  <div class="contactIcon">✉</div>
-  <div>
-    <h3>יצירת קשר עם יהודית שיינשניידר</h3>
-    <div class="contactLine">
-      <a href="mailto:yehuditsh100@gmail.com">yehuditsh100@gmail.com</a>
-      <a href="tel:0533177451">0533177451</a>
-    </div>
-  </div>
+</header>
+<section class="screen intro active" id="intro">
+<div class="hero">
+<div class="logoBox"><img alt="" src="logo.png"/></div>
+<h2>האם האוזן שלך חושבת כמו אולפניסטית מקצועית?</h2>
+<button class="btn" onclick="startGame()">התחילי את Mix Check</button>
 </div>
 </section>
+<section class="screen" id="game">
+<div class="game">
+<div class="gamePanel">
+<div class="gameTop">
+<span class="pill" id="step">קטע 1 מתוך 7</span>
+<span class="pill gold" id="type">זיהוי בעיה</span>
 </div>
+<div class="daw">
+<div class="dawTop">
+<span id="track">Track 01</span>
+<span class="leds"><span class="led"></span><span class="led"></span><span class="led"></span></span>
+</div>
+<div class="wave" id="wave"><div class="bars" id="bars"></div></div>
+<div class="playRow">
+<button class="playBtn" id="playBtn" onclick="toggleAudio()">▶</button>
+<div class="progressTrack"><div class="progressFill" id="progressFill"></div></div>
+</div>
+</div>
+<div class="questionCard">
+<h2 class="question" id="question"></h2>
+<div class="answers" id="answers"></div>
+</div>
+</div>
+</div>
+</section>
+<section class="screen final" id="final">
+<div class="finalHero">
+<div class="logoBox"><img alt="" src="logo.png"/></div>
+<div style="font-weight:800;color:var(--muted)">דו״ח Mix Check</div>
+<h2>סיימת את סימולטור אבחון המיקס</h2>
+<div class="bigScore" id="finalScore">0 נקודות</div>
+<div class="rank" id="finalRank">אולפניסטית מתחילה</div>
+</div>
+<div class="finalGrid">
+<div class="analysis"><b>החוזקה שלך</b><br/><span id="strengthText"></span></div>
+<div class="analysis"><b>מה כדאי לחזק</b><br/>דיוק באבחון לפני בחירת פעולה, והקשבה לשאלה: מה באמת הכי מפריע במיקס?</div>
+<div class="analysis"><b>המלצת יהודית</b><br/>מיקס טוב מתחיל הרבה לפני הפלאגין הראשון. קודם דואגים להקלטה טובה, אחר כך לעריכה מדויקת, ורק כשהכול נשמע טוב ויושב נכון יחד, עוברים לשלב המיקס.</div>
+<div class="analysis"><b>השלב הבא</b><br/>לחדד את סדר החשיבה: קודם אבחון, אחר כך פעולה. זה מה שמייצר מיקס מקצועי יותר.</div>
+</div>
+
+<div class="resultActions">
+<button class="btn gold" onclick="downloadCertificate()">הורדת תעודה PDF</button>
+<button class="btn dark" onclick="restart()">להתחיל מחדש</button>
+</div><div class="nextStagePremium">
+<div class="sectionTitle"><h2>ממשיכים לשלב הבא</h2></div>
+<div class="nextStageIntro">
+    אם הצלחת לזהות חלק מהטעויות שבדוגמאות, מצוין. ואם היו כאלה שהפתיעו אותך, גם זה מצוין.
+    <br/><br/>
+    המטרה של המגנט הזה לא הייתה ללמד אותך למקסס, אלא לפתוח לך צורת חשיבה אחרת. להראות שמאחורי כל החלטה במיקס עומדת דרך עבודה מסודרת, ושמיקס טוב לא מתחיל בפלאגינים, הוא מתחיל באוזניים שיודעות להקשיב, לזהות ולהבין מה באמת צריך.
+    <br/><br/>
+<b>בחרי את הצעד הבא שמתאים לך:</b>
+</div>
+<div class="nextStageGrid">
+<a class="nextCard" href="mailto:yehuditsh100@gmail.com?subject=%D7%90%D7%A0%D7%99%20%D7%9E%D7%A2%D7%95%D7%A0%D7%99%D7%99%D7%A0%D7%AA%20%D7%91%D7%A4%D7%92%D7%99%D7%A9%D7%AA%20%D7%99%D7%99%D7%A2%D7%95%D7%A5&amp;body=%D7%A9%D7%9C%D7%95%D7%9D%20%D7%99%D7%94%D7%95%D7%93%D7%99%D7%AA%2C%0A%0A%D7%A1%D7%99%D7%99%D7%9E%D7%AA%D7%99%20%D7%90%D7%AA%20Mix%20Check%20%D7%95%D7%94%D7%99%D7%99%D7%AA%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A2%D7%9C%20%D7%A4%D7%92%D7%99%D7%A9%D7%AA%20%D7%99%D7%99%D7%A2%D7%95%D7%A5.%0A%0A%D7%AA%D7%95%D7%93%D7%94!" style="--accent:#ff4b55">
+<div class="nextIcon">◉</div>
+<h3>בואי נדייק את המיקס שלך</h3>
+<p>בפגישת ייעוץ אישית נעבור יחד על המיקסים שלך, נזהה מה מעכב אותם ונבנה דרך עבודה שתעזור לך להוציא מהם הרבה יותר.</p>
+<div class="clickMark">↗</div>
+</a>
+<a class="nextCard" href="mailto:yehuditsh100@gmail.com?subject=%D7%90%D7%A0%D7%99%20%D7%9E%D7%A2%D7%95%D7%A0%D7%99%D7%99%D7%A0%D7%AA%20%D7%91%D7%9E%D7%99%D7%A7%D7%A1%20%D7%9E%D7%A7%D7%A6%D7%95%D7%A2%D7%99&amp;body=%D7%A9%D7%9C%D7%95%D7%9D%20%D7%99%D7%94%D7%95%D7%93%D7%99%D7%AA%2C%0A%0A%D7%99%D7%A9%20%D7%9C%D7%99%20%D7%A4%D7%A8%D7%95%D7%99%D7%A7%D7%98%20%D7%A9%D7%94%D7%99%D7%99%D7%AA%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%94%D7%A2%D7%91%D7%99%D7%A8%20%D7%9C%D7%9E%D7%99%D7%A7%D7%A1%20%D7%9E%D7%A7%D7%A6%D7%95%D7%A2%D7%99.%0A%0A%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D.%0A%0A%D7%AA%D7%95%D7%93%D7%94!" style="--accent:#f1c95b">
+<div class="nextIcon">≋</div>
+<h3>יש לך פרויקט שחשוב לך שיישמע במיטבו?</h3>
+<p>אפשר להעביר אותו למיקס מקצועי, עם דגש על דיוק, איזון והקשבה לכל פרט.</p>
+<div class="clickMark">↗</div>
+</a>
+<a class="nextCard" href="mailto:yehuditsh100@gmail.com?subject=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%94%D7%A6%D7%98%D7%A8%D7%A3%20%D7%9C%D7%A0%D7%99%D7%95%D7%96%D7%9C%D7%98%D7%A8%2C%20%D7%94%D7%A0%D7%A7%D7%95%D7%93%D7%94%20%D7%94%D7%90%D7%93%D7%95%D7%9E%D7%94&amp;body=%D7%A9%D7%9C%D7%95%D7%9D%20%D7%99%D7%94%D7%95%D7%93%D7%99%D7%AA%2C%0A%0A%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%94%D7%A6%D7%98%D7%A8%D7%A3%20%D7%9C%D7%A0%D7%99%D7%95%D7%96%D7%9C%D7%98%D7%A8%20%22%D7%94%D7%A0%D7%A7%D7%95%D7%93%D7%94%20%D7%94%D7%90%D7%93%D7%95%D7%9E%D7%94%22.%0A%0A%D7%90%D7%A0%D7%99%20%D7%9E%D7%90%D7%A9%D7%A8%D7%AA%20%D7%A7%D7%91%D7%9C%D7%AA%20%D7%93%D7%99%D7%95%D7%95%D7%A8%D7%99%D7%9D%20%D7%91%D7%9E%D7%99%D7%99%D7%9C.%0A%0A%D7%AA%D7%95%D7%93%D7%94!" style="--accent:#ff4b55">
+<div class="nextIcon">✦</div>
+<h3>רוצה להמשיך לפתח את האוזן המקצועית שלך?</h3>
+<p>בניוזלטר "הנקודה האדומה" אני משתפת באופן קבוע תובנות, דוגמאות מהאולפן ועקרונות עבודה שיעזרו לך לשפר את ההקשבה, את דרך החשיבה ואת איכות המיקסים שלך.</p>
+
+<div class="clickMark">↗</div>
+</a>
+</div>
+</div><div class="contactPremium">
+<div class="contactIcon">✉</div>
+<div>
+<h3>יצירת קשר עם יהודית שיינשניידר</h3>
+<div class="contactLine">
+<a href="mailto:yehuditsh100@gmail.com">yehuditsh100@gmail.com</a>
+<a href="tel:0533177451">0533177451</a>
+</div>
+</div>
+</div></section></div>
+
+
+
+
 
 <div class="modalOverlay" id="modalOverlay">
-  <div class="modal">
-    <div class="modalIcon" id="modalIcon">✓</div>
-    <div class="modalTitle" id="modalTitle">מדויק!</div>
-    <div class="modalText" id="modalText">+15 נקודות</div>
-    <div class="tip" id="modalTip"></div>
-    <button class="btn" style="margin-top:16px" onclick="next()">לקטע הבא</button>
-  </div>
+<div class="modal">
+<div class="modalIcon" id="modalIcon">✓</div>
+<div class="modalTitle" id="modalTitle">מדויק!</div>
+<div class="modalText" id="modalText">+15 נקודות</div>
+<div class="tip" id="modalTip"></div>
+<button class="btn" onclick="next()" style="margin-top:16px">לקטע הבא</button>
 </div>
-
+</div>
 <div class="coin" id="coin">15</div>
-
 <div id="certificate">
-  <div class="certFrame">
-    <div class="certLogo"><img src="logo.png" alt=""></div>
-    <div class="medal">★</div>
-    <h1>תעודת Mix Check</h1>
-    <h2>מוענקת על השלמת סימולטור אבחון המיקס</h2>
-    <div class="certRank" id="certRank">אולפניסטית מקצועית</div>
-    <div>ציון סופי</div>
-    <div class="certScore" id="certScore">0 נקודות</div>
-    <div class="certStrength">
-      <b>החוזקה שלך:</b><br>
-      <span id="certStrength"></span>
-    </div>
-    <div class="certFooter">
-      נבדק על פי שיטת העבודה של יהודית שיינשניידר<br>
-      <span id="certDate"></span>
-    </div>
-  </div>
+<div class="certFrame">
+<div class="certLogo"><img alt="" src="logo.png"/></div>
+<div class="medal">★</div>
+<h1>תעודת Mix Check</h1>
+<h2>מוענקת על השלמת סימולטור אבחון המיקס</h2>
+<div class="certRank" id="certRank">אולפניסטית מקצועית</div>
+<div>ציון סופי</div>
+<div class="certScore" id="certScore">0 נקודות</div>
+<div class="certStrength">
+<b>החוזקה שלך:</b><br/>
+<span id="certStrength"></span>
 </div>
-
+<div class="certFooter">
+      נבדק על פי שיטת העבודה של יהודית שיינשניידר<br/>
+<span id="certDate"></span>
+</div>
+</div>
+</div>
 <script>
 const questions = [
   {
